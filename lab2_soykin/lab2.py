@@ -7,23 +7,23 @@ def del_all(path):
     os.remove(path)
     open(path, 'w').close()
     print("Все содержимое файла удалено!")
-def delrow():
+def delrow(path,num_row):
     pass
-def delcol():
+def delcol(path,num_col):
     pass
-def swap():
+def swap(path, num_row1=None, num_row2=None):
     pass
-def undo():
+def undo(path, num_operations=1):
     pass
-def copy():
+def copy(path, num_row, start=None, end=None):
     pass
-def paste():
+def paste(path, num_row):
     pass
-def save():
+def save(path):
     pass
-def show():
+def show(path):
     pass
-def exit_redactor():
+def exit_redactor(path, log):
     pass
 
 def main():
@@ -37,25 +37,25 @@ def main():
             while True:
                 command = input().split()
                 if command[0]=="insert":
-                    log.append((path, command[1], int(command[2]), int(command[3])))
+                    log.append(('insert',path, command[1], int(command[2]), int(command[3])))
                 elif command[0]=="del":
-                    del_all(path)
+                    log.append(('del', path))
                 elif command[0]=="delrow":
-                    pass
+                    log.append(('delrow',path, int(command[1])))
                 elif command[0]=='swap':
-                    pass
+                    log.append(('swap', path, int(command[1]), int(command[2])))
                 elif command[0]=="undo":
-                    pass
+                    log.append(('undo', path, int(command[1])))
                 elif command[0]=="copy":
-                    pass
+                    log.append(('copy', path, int(command[1]), int(command[2]), int(command[3])))
                 elif command[0]=="paste":
-                    pass
+                    log.append(('paste', path, int(command[1])))
                 elif command[0]=="save":
-                    pass
+                    log.append(('save', path))
                 elif command[0]=="show":
-                    pass
+                    log.append(('show', path))
                 elif command[0]=="exit":
-                    pass
+                    log.append(('exit', path))
                 elif command[0]=="seelog":
                     print(log)
                     for i in log:
