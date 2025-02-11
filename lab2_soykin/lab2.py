@@ -1,25 +1,82 @@
 import sys
 import os
-def insert(path, text, num_str=None, cursor_str=None):
-    pass
-def del_all(path):
+
+
+def insert(path, text, num_row=None, num_col=None):
+    with open(path, "r") as f:
+        lines = f.readlines()  # Читаем строки
+    text=text.replace('"',"")
+    if num_row!=None and num_row>len(lines):
+        for i in range(num_row-len(lines)):
+            lines.append("\n")
+        lines[num_row-1]=text
+    elif num_row is None:
+        # Добавляем в конец файла
+        lines.append(text + "\n")
+
+    elif num_col is None:
+        # Вставляем в конкретную строку (начало от 1, а индексы с 0)
+        if num_row - 1 < len(lines):
+            lines[num_row - 1] = lines[num_row - 1].rstrip("\n") + text + "\n"
+        else:
+            lines.append("\n" * (num_row - len(lines) - 1) + text + "\n")  # Заполняем пустые строки
+
+    else:
+        # Вставляем в конкретное место внутри строки
+        if num_row - 1 < len(lines):
+            line = lines[num_row - 1].rstrip("\n")  # Убираем \n
+            lines[num_row - 1] = line[:num_col] + text + line[num_col:] + "\n"
+        else:
+            lines.append("\n" * (num_row - len(lines) - 1) + text + "\n")  # Заполняем пустые строки
+
+    with open(path, "w") as f:
+        f.writelines(lines)  # Записываем обратно
+
+
+def del_all(path, pusto=None):
     os.remove(path)
     open(path, 'w').close()
     print("Все содержимое файла удалено!")
 def delrow(path,num_row):
-    pass
+    with open(path, "r") as f:
+        lines = f.readlines()
+    if len(lines)>=num_row:
+        lines[num_row-1]="\n"
+    with open(path, "w") as f:
+        f.writelines(lines)
+
 def delcol(path,num_col):
-    pass
-def swap(path, num_row1=None, num_row2=None):
-    pass
-def undo(path, num_operations=1):
-    pass
+    with open(path, "r") as f:
+        lines = f.readlines()
+    # print(lines)
+    for i in range(len(lines)):
+        if len(lines[i])>=num_col:
+            lines[i]=lines[i][0:num_col-1]+lines[i][num_col:]
+
+    with open(path, "w") as f:
+        f.writelines(lines)
+def swap(path, num_row_1, num_row_2):
+    print(path, num_row_1, num_row_2)
+def undo(log, num):
+    if len(log)<num:
+        print("Введенное число больше размера изменений")
+        return log
+    for i in range(num):
+        del(log[-1])
+    return log
 def copy(path, num_row, start=None, end=None):
     pass
 def paste(path, num_row):
     pass
 def save(path, log):
-    file = open(path, 'w+')
+    i=0
+    log=log[::-1]
+    while log:
+        command=log.pop()
+        i+=1
+        globals()[command[0]](command[1],**command[2])
+    return []
+
 
 def show(path):
     with open(path, 'r') as f:
@@ -45,33 +102,45 @@ def main():
         while True:
             command = input().split()
             len_command=len(command)
-            if command[0]=="insert":
-                log.append(('insert',path,
-                            command[1], #text
-                            int(command[2]) if len_command>=3 else None, #num_row
-                            int(command[3]) if len(command)>=4 else None)) #num_col
-            elif command[0]=="del":
-                log.append(('del', path))
-            elif command[0]=="delrow":
-                log.append(('delrow',path, int(command[1])))
-            elif command[0]=='swap':
-                log.append(('swap', path, int(command[1]), int(command[2])))
-            elif command[0]=="undo":
-                log.append(('undo', path,
-                            int(command[1]) if len_command>=2 else None))#num_operations
-            elif command[0]=="copy":
-                log.append(('copy', path, int(command[1]),
-                            int(command[2]) if len_command >= 3 else None,  # start
-                            int(command[3]) if len_command >= 4 else None))  # end
-            elif command[0]=="paste":
-                log.append(('paste', path, int(command[1])))
-            elif command[0]=="save":
-                save(path, log)
-            elif command[0]=="show":
+            # print(command, len_command)
+            if command[0] == "insert":
+                log.append(('insert', path, {"text": command[1],
+                                             "num_row": abs(int(command[2])) if len(command) >= 3 else None,
+                                             "num_col": abs(int(command[3])) if len(command) >= 4 else None}))
+
+            elif command[0] == "del":
+                log.append(('del_all', path, {'pusto': None}))
+
+            elif command[0] == "delrow" and len_command==2:
+                log.append(('delrow', path, {"num_row": abs(int(command[1]))}))
+            elif command[0] == "delcol" and len_command==2:
+                log.append(('delcol', path, {"num_col": abs(int(command[1]))}))
+            elif command[0] == "swap" and len_command==3 and command[1].isnumeric() and command[2].isnumeric():
+                log.append(('swap', path, {"num_row_1": abs(int(command[1])), "num_row_2": abs(int(command[2]))}))
+
+            elif command[0] == "undo":
+                log=undo(log, int(command[1]) if len_command==2 else 1)
+
+            elif command[0] == "copy":
+                log.append(('copy', path, {"row": abs(int(command[1])),
+                                           "start": abs(int(command[2])) if len(command) >= 3 else None,
+                                           "end": abs(int(command[3])) if len(command) >= 4 else None}))
+
+            elif command[0] == "paste":
+                log.append(('paste', path, {"row": abs(int(command[1]))}))
+
+            elif command[0] == "save":
+                log=save(path, log)
+
+            elif command[0] == "show":
                 show(path)
-            elif command[0]=="exit":
+
+            elif command[0] == "exit":
                 exit_redactor(path, log)
+
             elif command[0]=="seelog":
-                for i in log:
+                for i in log[::-1]:
                     print(i)
+            else:
+                print("Команда введена неверно")
 main()
