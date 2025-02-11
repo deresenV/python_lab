@@ -56,7 +56,18 @@ def delcol(path,num_col):
     with open(path, "w") as f:
         f.writelines(lines)
 def swap(path, num_row_1, num_row_2):
-    print(path, num_row_1, num_row_2)
+    with open(path, "r") as f:
+        lines = f.readlines()
+    if len(lines)<num_row_1 or len(lines)<num_row_2:
+        for i in range(max(num_row_1, num_row_2)-len(lines)):
+            lines.append("\n")
+        print(lines[num_row_1-1], lines[num_row_2-1])
+        lines[num_row_1 - 1], lines[num_row_2 - 1] = lines[num_row_2 - 1], lines[num_row_1 - 1]
+    else:
+        print(lines[num_row_1], lines[num_row_2])
+        lines[num_row_1-1], lines[num_row_2-1] = lines[num_row_2-1], lines[num_row_1-1]
+    with open(path, "w") as f:
+        f.writelines(lines)
 def undo(log, num):
     if len(log)<num:
         print("Введенное число больше размера изменений")
