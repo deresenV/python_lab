@@ -1,29 +1,26 @@
 import sys
-import os
-
 
 def insert(path, text, num_row=None, num_col=None):
     with open(path, "r") as f:
         lines = f.readlines()  # Читаем строки
     text=text.replace('"',"")
-    if num_row!=None and num_row>len(lines):
-        for i in range(num_row-len(lines)):
+    if num_row!=None and num_row>len(lines): # insert "text" arg
+        for i in range(num_row-len(lines)+1):
             lines.append("\n")
         lines[num_row-1]=text
-    elif num_row is None:
+    elif num_row is None: # insert "text"
         # Добавляем в конец файла
         lines.append(text + "\n")
 
     elif num_col is None:
-        # Вставляем в конкретную строку (начало от 1, а индексы с 0)
         if num_row - 1 < len(lines):
-            lines[num_row - 1] = lines[num_row - 1].rstrip("\n") + text + "\n"
+            lines[num_row - 1] = lines[num_row - 1].rstrip("\n") + text +"\n"
         else:
-            lines.append("\n" * (num_row - len(lines) - 1) + text + "\n")  # Заполняем пустые строки
+            lines.append("\n" * (num_row - len(lines) - 1) + text+'\n')
 
     else:
         # Вставляем в конкретное место внутри строки
-        if num_row - 1 < len(lines):
+        if num_row - 1 < len(lines): #insert "text" arg arg
             line = lines[num_row - 1].rstrip("\n")  # Убираем \n
             lines[num_row - 1] = line[:num_col] + text + line[num_col:] + "\n"
         else:
@@ -34,7 +31,6 @@ def insert(path, text, num_row=None, num_col=None):
 
 
 def del_all(path, pusto=None):
-    os.remove(path)
     open(path, 'w').close()
     print("Все содержимое файла удалено!")
 def delrow(path,num_row):
@@ -48,7 +44,6 @@ def delrow(path,num_row):
 def delcol(path,num_col):
     with open(path, "r") as f:
         lines = f.readlines()
-    # print(lines)
     for i in range(len(lines)):
         if len(lines[i])>=num_col:
             lines[i]=lines[i][0:num_col-1]+lines[i][num_col:]
@@ -61,10 +56,8 @@ def swap(path, num_row_1, num_row_2):
     if len(lines)<num_row_1 or len(lines)<num_row_2:
         for i in range(max(num_row_1, num_row_2)-len(lines)):
             lines.append("\n")
-        print(lines[num_row_1-1], lines[num_row_2-1])
         lines[num_row_1 - 1], lines[num_row_2 - 1] = lines[num_row_2 - 1], lines[num_row_1 - 1]
     else:
-        print(lines[num_row_1], lines[num_row_2])
         lines[num_row_1-1], lines[num_row_2-1] = lines[num_row_2-1], lines[num_row_1-1]
     with open(path, "w") as f:
         f.writelines(lines)
@@ -124,10 +117,18 @@ def main():
         sys.exit(1)
     else:
         path=sys.argv[1]
+        f=open(path, "a").close()
         while True:
             command = input().split()
             len_command=len(command)
-            # print(command, len_command)
+            if len(command)>1 and command[1].count('"')!=0:
+                count = 0
+                strok = ''
+                while count != 2:
+                    var = command.pop(1)
+                    count += var.count('"')
+                    strok += var if len(strok) < 1 else " " + var
+                command.insert(1, strok)
             if command[0] == "insert":
                 log.append(('insert', path, {"text": command[1],
                                              "num_row": abs(int(command[2])) if len(command) >= 3 else None,
