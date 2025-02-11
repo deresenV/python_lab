@@ -75,8 +75,20 @@ def undo(log, num):
     for i in range(num):
         del(log[-1])
     return log
-def copy(path, num_row, start=None, end=None):
-    pass
+def copy(path, num_row, start, end):
+    if num_row==None:
+        print("Ошибка строки")
+        return ""
+    with open(path, "r") as f:
+        lines = f.readlines()
+    if len(lines)<num_row:
+        return ""
+    if start==None:
+        start=1
+    if end==None:
+        end=len(lines[num_row-1])
+    copy_text=lines[num_row-1][start-1:end]
+    return copy_text
 def paste(path, num_row):
     pass
 def save(path, log):
@@ -105,6 +117,7 @@ def exit_redactor(path, log):
 
 def main():
     log=[]
+    copy_text=""
     if len(sys.argv)!=2:
         print("Укажите путь до файла!")
         sys.exit(1)
@@ -132,11 +145,11 @@ def main():
             elif command[0] == "undo":
                 log=undo(log, int(command[1]) if len_command==2 else 1)
 
-            elif command[0] == "copy":
-                log.append(('copy', path, {"row": abs(int(command[1])),
-                                           "start": abs(int(command[2])) if len(command) >= 3 else None,
-                                           "end": abs(int(command[3])) if len(command) >= 4 else None}))
-
+            elif command[0] == "copy" and 2 <= len_command <= 4:
+                copy_text=copy(path,
+                               int(command[1]) if len_command >= 2 and command[1].isnumeric() else None,
+                               int(command[2]) if len_command >= 3 and command[2].isnumeric() else 1,
+                               int(command[3]) if len_command == 4 and command[3].isnumeric() else None)
             elif command[0] == "paste":
                 log.append(('paste', path, {"row": abs(int(command[1]))}))
 
