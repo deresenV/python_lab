@@ -8,29 +8,38 @@ def check_pos(x, y, danger_zones):
         return False
     return True
 def move(rotation, steps, x, y, log_moves, danger_zones, logger=True):
-    move_count=0
+    move_count = 0
+    temp_x, temp_y = x, y
     for _ in range(steps):
-        new_x, new_y = x, y
         if rotation == 'R':
-            new_x += 1
+            temp_x += 1
         elif rotation == 'L':
-            new_x -= 1
+            temp_x -= 1
         elif rotation == 'U':
-            new_y -= 1
+            temp_y -= 1
         elif rotation == 'D':
-            new_y += 1
+            temp_y += 1
+        if not check_pos(temp_x, temp_y, danger_zones):
+            return x, y, log_moves
 
-        if check_pos(new_x, new_y, danger_zones):
-            x, y = new_x, new_y
-            move_count += 1
-            print(x, y)
-        else:
-            break
-    if logger:
+    for _ in range(steps):
+        if rotation == 'R':
+            x += 1
+        elif rotation == 'L':
+            x -= 1
+        elif rotation == 'U':
+            y -= 1
+        elif rotation == 'D':
+            y += 1
+
+        move_count += 1
+        print(x, y)
+
+    if logger and move_count > 0:
         log_moves.insert(0, (rotation, move_count))
 
-
     return x, y, log_moves
+
 
 def reverse_rotation(rotation):
     if rotation == 'R':
@@ -80,7 +89,10 @@ def main_game():
 
                 elif len(command) == 2:
                     rotation, steps = command[0], int(command[1])
-                    x, y, log_moves = move(rotation, steps, x, y, log_moves, danger_zones)
+                    if steps<0:
+                        x,y,log_moves=move(reverse_rotation(rotation), abs(steps), x, y, log_moves, danger_zones)
+                    else:
+                        x, y, log_moves = move(rotation, steps, x, y, log_moves, danger_zones)
 
                 elif len(command) == 4:
                     danger_zones = zones(command)
