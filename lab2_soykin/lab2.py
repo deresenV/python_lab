@@ -109,7 +109,8 @@ def exit_redactor(path, log):
         print("Вы не сохранили все изменения! Желаете ли вы их сохранить?(y/n)")
         ans = input()
         if ans=='y':
-            pass
+            log=save(path, log)
+            return log
         elif ans=='n':
             sys.exit(1)
     else:
@@ -151,7 +152,7 @@ def main():
                                int(command[2]) if len_command >= 3 and command[2].isnumeric() else 1,
                                int(command[3]) if len_command == 4 and command[3].isnumeric() else None)
             elif command[0] == "paste":
-                log.append(('paste', path, {"row": abs(int(command[1]))}))
+                log.append(('paste', path, {"num_row": abs(int(command[1]))}))
 
             elif command[0] == "save":
                 log=save(path, log)
@@ -160,7 +161,7 @@ def main():
                 show(path)
 
             elif command[0] == "exit":
-                exit_redactor(path, log)
+                log = exit_redactor(path, log)
 
             elif command[0]=="seelog":
                 for i in log[::-1]:
