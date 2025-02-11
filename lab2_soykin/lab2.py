@@ -89,8 +89,8 @@ def copy(path, num_row, start, end):
         end=len(lines[num_row-1])
     copy_text=lines[num_row-1][start-1:end]
     return copy_text
-def paste(path, num_row):
-    pass
+def paste(path, num_row, copy_text):
+    insert(path, copy_text, num_row)
 def save(path, log):
     i=0
     log=log[::-1]
@@ -151,8 +151,8 @@ def main():
                                int(command[1]) if len_command >= 2 and command[1].isnumeric() else None,
                                int(command[2]) if len_command >= 3 and command[2].isnumeric() else 1,
                                int(command[3]) if len_command == 4 and command[3].isnumeric() else None)
-            elif command[0] == "paste":
-                log.append(('paste', path, {"num_row": abs(int(command[1]))}))
+            elif command[0] == "paste" and len_command==2 and command[1].isnumeric():
+                log.append(('paste', path, {"num_row": abs(int(command[1])),'copy_text': copy_text}))
 
             elif command[0] == "save":
                 log=save(path, log)
