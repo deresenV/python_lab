@@ -1,0 +1,63 @@
+def in_zone(x, y, dan_zone):  # Проверка на запретную зону
+    zone_x, zone_y, zone_width, zone_height = dan_zone
+    return zone_x <= x < zone_x + zone_width and zone_y <= y < zone_y + zone_height
+
+def movement(history, direction, steps, width, height, dan_zone):  # Движение робота и запись истории
+    x, y = history[-1] #текущие коорджинаты (=последняя запись в летописи)
+    match direction: #кнопки
+        case 'R':
+            x += steps
+        case 'L':
+            x -= steps
+        case 'U':
+            y -= steps
+        case 'D':
+            y += steps
+
+    if not (1 <= x <= width and 1 <= y <= height):  #вышел за 100х100
+        print("Выход за поле!")
+        return False
+    if in_zone(x, y, dan_zone):  #вошёл в запретку
+        print("Запретная зона!")
+        return False
+
+    history.append((x, y)) #введение летописи
+    return True
+
+def back(history, steps):  #бэк на N степсов
+    history[:] = history[:-steps] #удаление из летописи указанные степы
+
+def printer(history):  #вывод в стиле: "3,2"
+    for x, y in history[1:]:
+        print(f"{x},{y}")
+
+
+
+history = [(1, 1)]
+width, height = 100, 100
+
+x, y, w, h = map(int, input("Введите запретную зону (X Y W H): ").split())  #ввод запретной зоны
+dan_zone = (x, y, w, h)
+
+while True:
+    c = input("Введите команду (или EXIT для завершения): ").strip().upper()
+    if c == "EXIT" or c == "":
+        break
+
+    spl = c.split(',')
+    if len(spl) != 2: #проверочка на правильность
+        print("Ошибка: неверный формат команды (пример: R,3)")
+        continue
+
+    key, steps = spl[0], int(spl[1])
+    match key: #матч-кейс для ввода + проверка на шалопая
+        case 'R' | 'L' | 'U' | 'D':
+            if not movement(history, key, steps, width, height, dan_zone):
+                continue
+        case 'B':
+            back(history, steps)
+        case _: #шалопай
+            print("Ошибка: неизвестная команда")
+            continue
+
+printer(history) #вывести летопись
