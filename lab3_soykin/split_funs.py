@@ -8,12 +8,13 @@ def split_data(file, interval):
             data_temp=[]
             start_time=float(info['time'])
             end_time=start_time+interval
-            print(start_time, end_time)
+        count=1
         if float(info['time'])>=end_time:
             data.append(data_temp)
-            count=0
+            start_time=float(info['time'])
+            end_time=start_time+interval
             data_temp=[]
-        else:
-            count+=float(info['time'])
             data_temp.append(float(info['value']))
-    print(data)
+        else:
+            data_temp.append(float(info['value']))
+    return data

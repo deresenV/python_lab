@@ -4,10 +4,12 @@ import sys
 
 from split_funs import split_data
 
-def read_data_from_file(path, interval):
+def read_data_from_file(path):
     with open(path, newline='') as f: # time value
         reader = csv.DictReader(f, delimiter=',')
-        split_data(reader,interval)
+        return list(reader)
+
+
 def calculate_statistics():
     pass
 def main():
@@ -17,5 +19,7 @@ def main():
     path = sys.argv[1]
     interval = int(sys.argv[2])
     print(path, interval)
-    read_data_from_file(path, interval)
+    data_csv=read_data_from_file(path)
+    sorted_interval= split_data(data_csv,interval)
+    print(*sorted_interval, sep='\n')
 main()
