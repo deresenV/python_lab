@@ -2,13 +2,20 @@ import statistics
 import csv
 import sys
 
-from split_data import split_data
+from split_funs import split_data
 
-def read_data_from_file():
-    pass
+def read_data_from_file(path, interval):
+    with open(path, newline='') as f: # time value
+        reader = csv.DictReader(f, delimiter=',')
+        split_data(reader,interval)
 def calculate_statistics():
     pass
 def main():
     if len(sys.argv) < 3:
         print("python3 lab3.py file_path interval")
         sys.exit(1)
+    path = sys.argv[1]
+    interval = int(sys.argv[2])
+    print(path, interval)
+    read_data_from_file(path, interval)
+main()
