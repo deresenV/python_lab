@@ -1,66 +1,76 @@
-pos_x, pos_y = 1, 1  # Начальные координаты позиции
-moves_log = []  # Журнал ходов (сохранение направления и количества шагов)
-danger = set()  # Множество координат, представляющих запретные зоны
+pos_x, pos_y = 1, 1  
+moves_log = [] 
+danger = set()  
+cmds = []
 
 while True:
-    cmd = input().split(',')  # Ввод команды, разделённой запятыми
+    cmd = input().split(',') 
+    
+    if cmd[0] == 'DO':
+        for cmd in cmds:
+            if cmd[0] == 'B':  
+                back_steps = int(cmd[1]) if len(cmd) > 1 else 1  
+                if not moves_log:
+                    print("Использование B недоступно! Нет записанных ходов.")
+                    continue
 
-    if cmd[0] == 'B':  # Обработка команды "B" (возврат назад)
-        back_steps = int(cmd[1]) if len(cmd) > 1 else 1  # Количество шагов назад (по умолчанию 1)
-        if not moves_log:
-            print("Использование B недоступно! Нет записанных ходов.")
-            continue
+                back_steps = min(back_steps, len(moves_log)) 
+                for _ in range(back_steps): 
+                    last_dir, last_steps = moves_log.pop(0)  
+                    reverse_dir = {'R': 'L', 'L': 'R', 'U': 'D', 'D': 'U'}.get(last_dir)  
+                    for _ in range(last_steps): 
+                        if reverse_dir == 'R':
+                            pos_x += 1
+                        elif reverse_dir == 'L':
+                            pos_x -= 1
+                        elif reverse_dir == 'U':
+                            pos_y -= 1
+                        elif reverse_dir == 'D':
+                            pos_y += 1
+                        if (pos_x, pos_y) in danger:  
+                            print("Запретная зона!")    
+                            break
+                        print(pos_x, pos_y)  
 
-        back_steps = min(back_steps, len(moves_log))  # Ограничение количества шагов назад
-        for _ in range(back_steps):  # Перебор ходов для отмены
-            last_dir, last_steps = moves_log.pop(0)  # Получаем последний ход
-            reverse_dir = {'R': 'L', 'L': 'R', 'U': 'D', 'D': 'U'}.get(last_dir)  # Определяем обратное направление в формате словаря (ключ: значение)
-            for _ in range(last_steps):  # Двигаемся назад по отменяемому ходу
-                if reverse_dir == 'R':
-                    pos_x += 1
-                elif reverse_dir == 'L':
-                    pos_x -= 1
-                elif reverse_dir == 'U':
-                    pos_y -= 1
-                elif reverse_dir == 'D':
-                    pos_y += 1
-                print(pos_x, pos_y)  # Вывод текущей позиции
+            elif len(cmd) == 2: 
+                direction, steps = cmd[0], int(cmd[1]) 
+                dx, dy = 0, 0  
+                if direction == 'R': 
+                    dx = 1
+                elif direction == 'L':  
+                    dx = -1
+                elif direction == 'U': 
+                    dy = -1
+                elif direction == 'D': 
+                    dy = 1
 
-    elif len(cmd) == 2:  # Обработка команды перемещения (направление, шаги)
-        direction, steps = cmd[0], int(cmd[1])  # Разбираем ввод
-        dx, dy = 0, 0  # Смещения по координатам
-        if direction == 'R':  # Вправо
-            dx = 1
-        elif direction == 'L':  # Влево
-            dx = -1
-        elif direction == 'U':  # Вверх
-            dy = -1
-        elif direction == 'D':  # Вниз
-            dy = 1
+                safe = True 
+                for step in range(1, steps + 1): 
+                    new_x = pos_x + dx * step
+                    new_y = pos_y + dy * step
+                    if not (1 <= new_x <= 100 and 1 <= new_y <= 100):  
+                        print("Конец карты!")
+                        safe = False
+                        break
+                    if (new_x, new_y) in danger: 
+                        print("Запретная зона!")
+                        safe = False
+                        break
 
-        safe = True  # Флаг безопасности передвижения
-        for step in range(1, steps + 1):  # Проверяем, можно ли пройти все шаги
-            new_x = pos_x + dx * step
-            new_y = pos_y + dy * step
-            if not (1 <= new_x <= 100 and 1 <= new_y <= 100):  # Проверка выхода за границы карты
-                print("Конец карты!")
-                safe = False
-                break
-            if (new_x, new_y) in danger:  # Проверка запретной зоны
-                print("Запретная зона!")
-                safe = False
-                break
+                if safe:  
+                    for _ in range(steps):
+                        pos_x += dx
+                        pos_y += dy
+                        print(pos_x, pos_y)  
+                    moves_log.insert(0, (direction, steps)) 
 
-        if safe:  # Если передвижение безопасно, выполняем шаги
-            for _ in range(steps):
-                pos_x += dx
-                pos_y += dy
-                print(pos_x, pos_y)  # Вывод текущей позиции
-            moves_log.insert(0, (direction, steps))  # Сохраняем ход в журнал
+            elif len(cmd) == 4:  
+                x, y, w, h = map(int, cmd)  
+                danger = {(i, j) for j in range(y, y + h) for i in range(x, x + w)}  
+                print(danger)
 
-    elif len(cmd) == 4:  # Обработка команды установки запретной зоны
-        x, y, w, h = map(int, cmd)  # Разбираем ввод координат и размеров зоны
-        danger = {(i, j) for j in range(y, y + h) for i in range(x, x + w)}  # Заполняем множество запретных клеток
-
+            else:
+                print("Некорректная команда!")  
+        cmds = []
     else:
-        print("Некорректная команда!")  # Обработка некорректного ввода
+        cmds.append(cmd)
