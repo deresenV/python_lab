@@ -14,7 +14,7 @@ def primes(n):
     for i in range(2, n+1):
         if ptr[i]:
             primes.append(i)
-
+    return primes
 
 def goldbach(primes_array,n,m):
     pass
