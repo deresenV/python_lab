@@ -7,6 +7,8 @@ def check_pos(x, y, danger_zones):
         print("Дальше проход невозможен!\nЗапретная зона!")
         return False
     return True
+
+
 def move(rotation, steps, x, y, log_moves, danger_zones, logger=True):
     move_count = 0
     temp_x, temp_y = x, y
@@ -50,6 +52,7 @@ def reverse_rotation(rotation):
         return "D"
     if rotation == 'D':
         return "U"
+
 
 def back(log_moves, x, y, danger_zones, steps_back=1):
     if not log_moves:

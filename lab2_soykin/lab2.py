@@ -2,13 +2,13 @@ import sys
 
 def insert(path, text, num_row=None, num_col=None):
     with open(path, "r") as f:
-        lines = f.readlines()  # Читаем строки
+        lines = f.readlines()
     text=text.replace('"',"")
     if num_row!=None and num_row>len(lines): # insert "text" arg
         for i in range(num_row-len(lines)+1):
             lines.append("\n")
         num_row = 0 if num_row==None else num_row
-        lines[num_row-1]=" "*num_col+text
+        lines[num_row-1]=text
     elif num_row is None: # insert "text"
         lines.append(text + "\n")
 
@@ -41,6 +41,7 @@ def delrow(path,num_row):
     with open(path, "w") as f:
         f.writelines(lines)
 
+
 def delcol(path,num_col):
     with open(path, "r") as f:
         lines = f.readlines()
@@ -50,6 +51,8 @@ def delcol(path,num_col):
 
     with open(path, "w") as f:
         f.writelines(lines)
+
+
 def swap(path, num_row_1, num_row_2):
     with open(path, "r") as f:
         lines = f.readlines()
@@ -61,6 +64,8 @@ def swap(path, num_row_1, num_row_2):
         lines[num_row_1-1], lines[num_row_2-1] = lines[num_row_2-1], lines[num_row_1-1]
     with open(path, "w") as f:
         f.writelines(lines)
+
+
 def undo(log, num):
     if len(log)<num:
         print("Введенное число больше размера изменений")
@@ -68,6 +73,8 @@ def undo(log, num):
     for i in range(num):
         del(log[-1])
     return log
+
+
 def copy(path, num_row, start, end):
     if num_row==None:
         print("Ошибка строки")
@@ -82,8 +89,12 @@ def copy(path, num_row, start, end):
         end=len(lines[num_row-1])
     copy_text=lines[num_row-1][start-1:end]
     return copy_text
+
+
 def paste(path, num_row, copy_text):
     insert(path, copy_text, num_row)
+
+
 def save(path, log):
     i=0
     log=log[::-1]
@@ -97,6 +108,8 @@ def save(path, log):
 def show(path):
     with open(path, 'r') as f:
         print(f.read())
+
+
 def exit_redactor(path, log):
     if len(log)!=0:
         print("Вы не сохранили все изменения! Желаете ли вы их сохранить?(y/n)")
@@ -108,6 +121,7 @@ def exit_redactor(path, log):
             sys.exit(1)
     else:
         sys.exit(1)
+
 
 def main():
     log=[]
