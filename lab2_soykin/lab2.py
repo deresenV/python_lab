@@ -7,9 +7,9 @@ def insert(path, text, num_row=None, num_col=None):
     if num_row!=None and num_row>len(lines): # insert "text" arg
         for i in range(num_row-len(lines)+1):
             lines.append("\n")
-        lines[num_row-1]=text
+        num_row = 0 if num_row==None else num_row
+        lines[num_row-1]=" "*num_col+text
     elif num_row is None: # insert "text"
-        # Добавляем в конец файла
         lines.append(text + "\n")
 
     elif num_col is None:
@@ -21,10 +21,10 @@ def insert(path, text, num_row=None, num_col=None):
     else:
         # Вставляем в конкретное место внутри строки
         if num_row - 1 < len(lines): #insert "text" arg arg
-            line = lines[num_row - 1].rstrip("\n")  # Убираем \n
+            line = lines[num_row - 1].rstrip("\n")
             lines[num_row - 1] = line[:num_col] + text + line[num_col:] + "\n"
         else:
-            lines.append("\n" * (num_row - len(lines) - 1) + text + "\n")  # Заполняем пустые строки
+            lines.append("\n" * (num_row - len(lines) - 1) + text + "\n")
 
     with open(path, "w") as f:
         f.writelines(lines)  # Записываем обратно
