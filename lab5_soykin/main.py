@@ -40,21 +40,22 @@ def settings_btn(): # Функция окна настроек
 
 
 def lose_game(): # Если закончилось время
-    pass
+    start_game.grid(row=0, column=3, padx=10)
 
 
 def new_game(): # Старт игры с таймером
+    start_game.grid_forget() # Скрываем клавишу старта игры если она уже запущена
     def update_timer():
         global time_left
         if time_left > 0:
             time_left -= 1
             progress["value"] = (total_time - time_left) / total_time * 100  # Заполняем полоску
             root.after(1000, update_timer)  # Запускаем снова через 1 сек
-        else:
+        else: # Если проиграли
             lose_game()
     global time_left
     progress = ttk.Progressbar(root, length=480, mode="determinate")
-    progress.place(x=0, y=200)
+    progress.place(x=0, y=y_size-30, height=30)
     time_left = total_time  # Сброс таймера
     progress["value"] = 0  # Обнуляем полоску
     update_timer()
@@ -62,7 +63,8 @@ def new_game(): # Старт игры с таймером
 #Начальное значение размера блока
 filed_size=48
 #Окно игры
-root=create_window(480, 480+28) # +28 - размер кнопок
+y_size=480+28+30
+root=create_window(480, y_size) # +28 - размер кнопок
 
 
 frame = ttk.Frame(root)
@@ -71,7 +73,8 @@ frame.pack(pady=0)
 ttk.Button(frame, text="Settings", command=settings_btn).grid(row=0, column=0, padx=10)
 ttk.Button(frame, text="Quit", command=root.destroy).grid(row=0, column=1, padx=10)
 ttk.Button(frame, text="New Game", command=new_game).grid(row=0, column=2, padx=10)
-ttk.Button(frame, text="Start", command=new_game).grid(row=0, column=3, padx=10)
+start_game=ttk.Button(frame, text="Start", command=new_game)
+start_game.grid(row=0, column=3, padx=10)
 
 
 
