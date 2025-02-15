@@ -15,14 +15,17 @@ def settings_btn(): # Функция окна настроек
     settings_window.title("Настройки")
     settings_window.geometry("300x200")
 
+    def get_size():  # Изменение размера игровых блоков
+        global field_size
+        size = count_block.get()
 
-    def get_size(): # Изменение размера поля под конкретное кол-во игровых блоков
-        size=count_block.get()
-        if size=="":
-            size=10
-        elif int(size)<=10:
-            size=10
-        root.geometry(f"{int(size)*48}x{int(size)*48}")
+        if not size.isdigit():  # Проверка на ввод только чисел
+            size = 10
+        else:
+            size = int(size)
+            size = max(10, min(100, size))  # Ограничиваем значение от 10 до 100
+
+        field_size = int(size ** 0.5) * 48
 
 
     #Работа с размером поля
@@ -34,10 +37,21 @@ def settings_btn(): # Функция окна настроек
     #exit
     ttk.Button(settings_window, text="Закрыть", command=settings_window.destroy).place(x=205,y=170, width=95, height=30)
 
+def new_game():
+    pass
+
 
 root=create_window(480, 480)
 
-ttk.Button(root, text="Settings", command=settings_btn).place(x=0, y=0) # Настройки
+
+frame = ttk.Frame(root)
+frame.pack(pady=0)
+# Создаём кнопки в строку
+ttk.Button(frame, text="Settings", command=settings_btn).grid(row=0, column=0, padx=10)
+ttk.Button(frame, text="Quit", command=root.destroy).grid(row=0, column=1, padx=10)
+ttk.Button(frame, text="New Game", command=new_game).grid(row=0, column=2, padx=10)
+ttk.Button(frame, text="Start", command=new_game).grid(row=0, column=3, padx=10)
+
 
 
 root.mainloop()
