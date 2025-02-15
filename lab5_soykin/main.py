@@ -5,6 +5,8 @@ total_time = 5  # Время в секундах
 field_size = 48  # Размер игрового блока
 progress = None  # Полоска прогресса
 stop_btn = None  # Кнопка "Stop"
+time_left = total_time  # Время, оставшееся на таймере
+timer_id = None  # ID таймера для `after`
 
 def create_window(x, y):
     root = Tk()
@@ -45,13 +47,17 @@ def return_button():
     settings_button.grid(row=0, column=0, padx=10)
 
 def stop_button():
-    global progress, stop_btn
+    global progress, stop_btn, timer_id, time_left
+    if timer_id:
+        root.after_cancel(timer_id)  # Останавливаем таймер
+        timer_id = None
     if progress:
         progress.destroy()  # Удаляем полоску прогресса
         progress = None
     if stop_btn:
         stop_btn.destroy()  # Удаляем кнопку "Stop"
         stop_btn = None
+    time_left = total_time  # Сбрасываем таймер
     return_button()
 
 def lose_game():  # Если закончилось время
@@ -59,32 +65,30 @@ def lose_game():  # Если закончилось время
     print("Вы проиграли!")  # Для теста
 
 def new_game():  # Старт игры с таймером
-    global progress, stop_btn, time_left
+    global progress, stop_btn, time_left, timer_id
+
+    stop_button()  # Сбрасываем предыдущее состояние игры
 
     # Скрываем кнопку старта и настроек
     start_game.grid_forget()
     settings_button.grid_forget()
 
-    # Если уже есть progress bar — удаляем его, чтобы не создавать новый
-    if progress:
-        progress.destroy()
+    # Создаём новую полоску прогресса
     progress = ttk.Progressbar(root, length=480, mode="determinate")
     progress.place(x=10, y=150, height=30)
 
-    # Если кнопка "Stop" уже существует, удаляем её
-    if stop_btn:
-        stop_btn.destroy()
+    # Создаём кнопку "Stop"
     stop_btn = ttk.Button(frame, text="Stop", command=stop_button)
     stop_btn.grid(row=0, column=1, padx=10)
 
     # Функция обновления таймера
     def update_timer():
-        global time_left
+        global time_left, timer_id
         if time_left > 0:
             time_left -= 1
             if progress:
                 progress["value"] = (total_time - time_left) / total_time * 100  # Заполняем полоску
-                root.after(1000, update_timer)  # Запускаем снова через 1 сек
+            timer_id = root.after(1000, update_timer)  # Запускаем снова через 1 сек
         else:  # Если время вышло
             lose_game()
 
