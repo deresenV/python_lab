@@ -25,7 +25,7 @@ def settings_btn(): # Функция окна настроек
             size = int(size)
             size = max(10, min(100, size))  # Ограничиваем значение от 10 до 100
 
-        field_size = int(size ** 0.5) * 48
+        field_size = 480//int(size ** 0.5)
 
 
     #Работа с размером поля
