@@ -49,7 +49,6 @@ def new_game(): # Старт игры с таймером
         if time_left > 0:
             time_left -= 1
             progress["value"] = (total_time - time_left) / total_time * 100  # Заполняем полоску
-            print(time_left)
             root.after(1000, update_timer)  # Запускаем снова через 1 сек
         else:
             lose_game()
