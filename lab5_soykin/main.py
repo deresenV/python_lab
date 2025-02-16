@@ -1,12 +1,21 @@
+import random
 from tkinter import *
 from tkinter import ttk
 
-total_time = 5  # Время в секундах
+from lab5_soykin.BlockButton import BlockButton
+
+total_time = 120  # Время в секундах
 field_size = 48  # Размер игрового блока
 progress = None  # Полоска прогресса
 stop_btn = None  # Кнопка "Stop"
 time_left = total_time  # Время, оставшееся на таймере
 timer_id = None  # ID таймера для `after`
+game_blocks=None
+blocks_paths_off = [
+    'sprite/game_block/hip_off.png',
+    'sprite/game_block/horizontal_off.png',
+    'sprite/game_block/vertical_off.png',
+]
 
 def create_window(x, y):
     root = Tk()
@@ -47,7 +56,7 @@ def return_button():
     settings_button.grid(row=0, column=0, padx=10)
 
 def stop_button():
-    global progress, stop_btn, timer_id, time_left
+    global progress, stop_btn, timer_id, time_left, game_blocks
     if timer_id:
         root.after_cancel(timer_id)  # Останавливаем таймер
         timer_id = None
@@ -57,8 +66,35 @@ def stop_button():
     if stop_btn:
         stop_btn.destroy()  # Удаляем кнопку "Stop"
         stop_btn = None
+
+    # Удаление всех кнопок из game_blocks
+    if game_blocks:
+        for btn in game_blocks:
+            btn.destroy()
+        game_blocks.clear()  # Очищаем список
+
     time_left = total_time  # Сбрасываем таймер
     return_button()
+
+def create_game_block(): # Создание игрового поля
+    global game_blocks
+    game_blocks=[]
+    i=0 # index
+    #Координаты 28> - верхние кнопки
+    y_blocks=28
+    x_blocks=0
+    for y in range(480//field_size):
+        x_blocks=0
+        for x in range(480//field_size):
+            img_paths=random.choice(blocks_paths_off)
+            btn=BlockButton(root,x_blocks,y_blocks,img_paths,i, game_blocks, field_size)
+            game_blocks.append(btn)
+            i+=1
+            x_blocks+=field_size
+
+        y_blocks+=field_size
+
+
 
 def lose_game():  # Если закончилось время
     stop_button()  # Удаляем таймер и кнопку
@@ -67,7 +103,9 @@ def lose_game():  # Если закончилось время
 def new_game():  # Старт игры с таймером
     global progress, stop_btn, time_left, timer_id
 
-    stop_button()  # Сбрасываем предыдущее состояние игры
+    stop_button()  # Очищаем предыдущее состояние игры (удаляет кнопки)
+
+    create_game_block()  # Теперь создаём новые кнопки
 
     # Скрываем кнопку старта и настроек
     start_game.grid_forget()
@@ -75,7 +113,7 @@ def new_game():  # Старт игры с таймером
 
     # Создаём новую полоску прогресса
     progress = ttk.Progressbar(root, length=480, mode="determinate")
-    progress.place(x=10, y=150, height=30)
+    progress.place(x=0, y=y_size - 30, height=30)
 
     # Создаём кнопку "Stop"
     stop_btn = ttk.Button(frame, text="Stop", command=stop_button)
@@ -96,6 +134,7 @@ def new_game():  # Старт игры с таймером
     time_left = total_time
     progress["value"] = 0
     update_timer()
+
 
 # Окно игры
 y_size = 480 + 28 + 30
