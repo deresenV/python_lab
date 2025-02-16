@@ -12,9 +12,13 @@ time_left = total_time  # Время, оставшееся на таймере
 timer_id = None  # ID таймера для `after`
 game_blocks=None
 blocks_paths_off = [
-    'sprite/game_block/hip_off.png',
-    'sprite/game_block/horizontal_off.png',
-    'sprite/game_block/vertical_off.png',
+    ['sprite/game_block/hip_off_LT_DW.png',
+    'sprite/game_block/hip_off_LT_UP.png',
+    'sprite/game_block/hip_off_RT_DW.png',
+    'sprite/game_block/hip_off_RT_UP.png',
+     ],
+    ['sprite/game_block/horizontal_off.png'],
+    ['sprite/game_block/vertical_off.png'],
 ]
 
 def create_window(x, y):
@@ -86,7 +90,8 @@ def create_game_block(): # Создание игрового поля
     for y in range(480//field_size):
         x_blocks=0
         for x in range(480//field_size):
-            img_paths=random.choice(blocks_paths_off)
+            img_paths=random.choice(random.choice(blocks_paths_off))
+            print(img_paths)
             btn=BlockButton(root,x_blocks,y_blocks,img_paths,i, game_blocks, field_size)
             game_blocks.append(btn)
             i+=1
