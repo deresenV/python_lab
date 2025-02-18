@@ -105,7 +105,12 @@ def create_game_block(): # Создание игрового поля
 
 def lose_game():  # Если закончилось время
     stop_button()  # Удаляем таймер и кнопку
-    print("Вы проиграли!")  # Для теста
+    lose_window = Toplevel(root)
+    lose_window.title("Результаты")
+    lose_window.geometry("300x200")
+    ttk.Label(lose_window, text="Вы проиграли!",font=("Arial", 36)).pack(anchor=CENTER)
+    ttk.Button(lose_window, text="Выйти из игры", command=root.destroy).pack(anchor=CENTER)
+    ttk.Button(lose_window, text="Играть", command=lambda: (new_game(), lose_window.destroy())).pack(anchor=CENTER)
 
 def new_game():  # Старт игры с таймером
     global progress, stop_btn, time_left, timer_id
