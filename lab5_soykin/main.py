@@ -11,6 +11,7 @@ stop_btn = None  # Кнопка "Stop"
 time_left = total_time  # Время, оставшееся на таймере
 timer_id = None  # ID таймера для `after`
 game_blocks=None
+count=0
 blocks_paths_off = [
     ['sprite/game_block/hip_off_LT_DW.png',
     'sprite/game_block/hip_off_LT_UP.png',
@@ -102,19 +103,19 @@ def create_game_block(): # Создание игрового поля
         y_blocks+=field_size
 
 
-
-def lose_game():  # Если закончилось время
+def result_game(text):  # Если закончилось время
     stop_button()  # Удаляем таймер и кнопку
     lose_window = Toplevel(root)
     lose_window.title("Результаты")
     lose_window.geometry("300x200")
-    ttk.Label(lose_window, text="Вы проиграли!",font=("Arial", 36)).pack(anchor=CENTER)
+    ttk.Label(lose_window, text=text,font=("Arial", 36)).pack(anchor=CENTER)
     ttk.Button(lose_window, text="Выйти из игры", command=root.destroy).pack(anchor=CENTER)
     ttk.Button(lose_window, text="Играть", command=lambda: (new_game(), lose_window.destroy())).pack(anchor=CENTER)
 
+
 def new_game():  # Старт игры с таймером
     global progress, stop_btn, time_left, timer_id
-
+    count=0
     stop_button()  # Очищаем предыдущее состояние игры (удаляет кнопки)
 
     create_game_block()  # Теперь создаём новые кнопки
@@ -133,14 +134,23 @@ def new_game():  # Старт игры с таймером
 
     # Функция обновления таймера
     def update_timer():
-        global time_left, timer_id
+        global time_left, timer_id, count
         if time_left > 0:
+            if True:
+                count=0
+                for btn in game_blocks:
+                    if btn.img_path.count("_on") == 1:
+                        count+=1
+                    if count==(480//field_size)**2:
+                        stop_button()
+                        result_game("Вы выиграли!")
             time_left -= 1
+
             if progress:
                 progress["value"] = (total_time - time_left) / total_time * 100  # Заполняем полоску
             timer_id = root.after(1000, update_timer)  # Запускаем снова через 1 сек
         else:  # Если время вышло
-            lose_game()
+            result_game("Вы проиграли")
 
     # Сбрасываем таймер и запускаем его
     time_left = total_time
