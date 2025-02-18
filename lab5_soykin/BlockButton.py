@@ -40,43 +40,6 @@ class BlockButton(Button):
         if ((main_img == blocks_paths_on[5] and self.img_path==blocks_paths_off[5] and abs(self.index-main_index)==1) or
                 (main_img == blocks_paths_off[5] and self.img_path==blocks_paths_on[5] and abs(self.index-main_index)//(480//self.field_size)==1)):
             return True
-        # # horizontal + LT_DW
-        # if ((main_img == blocks_paths_on[4] and self.img_path==blocks_paths_off[0] and (self.index-main_index)==-1) or
-        #         (main_img == blocks_paths_off[0] and self.img_path==blocks_paths_on[4] and (self.index-main_index)==-1) or
-        # (main_img == blocks_paths_off[4] and self.img_path==blocks_paths_on[0] and (self.index-main_index)==-1)):
-        #     return True
-        # # horizontal+ LT_UP
-        # if ((main_img == blocks_paths_on[4] and self.img_path==blocks_paths_off[1] and (self.index-main_index)==-1) or
-        #         (main_img == blocks_paths_off[1] and self.img_path==blocks_paths_on[4] and (self.index-main_index)==-1) or
-        # (main_img == blocks_paths_off[4] and self.img_path==blocks_paths_on[1] and (self.index-main_index)==-1)):
-        #     return True
-        # #vertical+LT_UP
-        # if ((main_img == blocks_paths_on[5] and self.img_path==blocks_paths_off[1] and (self.index-main_index)//(480//self.field_size)==-1) or
-        #         (main_img == blocks_paths_off[1] and self.img_path==blocks_paths_on[5] and (self.index-main_index)//(480//self.field_size)==-1) or
-        # (main_img == blocks_paths_off[5] and self.img_path==blocks_paths_on[1] and (self.index-main_index)//(480//self.field_size)==-1) or
-        # (main_img == blocks_paths_on[1] and self.img_path==blocks_paths_off[5] and (self.index-main_index)//(480//self.field_size)==-1)):
-        #     return True
-        # # vertical+RT_UP
-        # if ((main_img == blocks_paths_on[5] and self.img_path==blocks_paths_off[3] and (self.index-main_index)//(480//self.field_size)==-1) or
-        #         (main_img == blocks_paths_off[3] and self.img_path==blocks_paths_on[5] and (self.index-main_index)//(480//self.field_size)==-1) or
-        # (main_img == blocks_paths_off[5] and self.img_path==blocks_paths_on[3] and (self.index-main_index)//(480//self.field_size)==-1)):
-        #     return True
-        # # vertical+RT_DW
-        # if ((main_img == blocks_paths_on[5] and self.img_path==blocks_paths_off[2] and (self.index-main_index)//(480//self.field_size)==1) or
-        #         (main_img == blocks_paths_off[2] and self.img_path==blocks_paths_on[5] and (self.index-main_index)//(480//self.field_size)==1) or
-        # (main_img == blocks_paths_off[5] and self.img_path==blocks_paths_on[2] and (self.index-main_index)//(480//self.field_size)==-1)):
-        #     return True
-
-
-        #horizontal+RT_UP
-        # if ((main_img == blocks_paths_on[4] and self.img_path == blocks_paths_off[3] and abs((self.index - main_index)) == -1) or
-        #             (main_img == blocks_paths_off[3] and self.img_path == blocks_paths_on[4] and abs(self.index - main_index) == -1) or
-        #         (main_img == blocks_paths_on[3] and self.img_path == blocks_paths_off[4] and abs((self.index - main_index)) == 1) or
-        #         (main_img == blocks_paths_off[4] and self.img_path == blocks_paths_on[3] and abs(self.index - main_index) == 1)):
-        #     return True
-        # # horizontal+RT_DW
-        # if ((main_img == blocks_paths_on[4] and self.img_path == blocks_paths_off[2] and (self.index - main_index) == 1) or(main_img == blocks_paths_off[2] and self.img_path == blocks_paths_on[4] and (self.index - main_index) == 1)):
-        #     return True
         #horizontal+hip
         if ((main_img == blocks_paths_off[0] and self.img_path==blocks_paths_on[4] and main_index-self.index==1) or
                 (main_img == blocks_paths_off[4] and self.img_path == blocks_paths_on[0] and main_index - self.index == -1) or
@@ -146,23 +109,6 @@ class BlockButton(Button):
 
         ):
             return True
-    # blocks_paths_off = [
-    #     'sprite/game_block/hip_off_LT_DW.png',  # 0
-    #     'sprite/game_block/hip_off_LT_UP.png',  # 1
-    #     'sprite/game_block/hip_off_RT_DW.png',  # 2
-    #     'sprite/game_block/hip_off_RT_UP.png',  # 3
-    #     'sprite/game_block/horizontal_off.png',  # 4
-    #     'sprite/game_block/vertical_off.png',  # 5
-    # ]
-    # blocks_paths_on = [
-    #     'sprite/game_block/hip_on_LT_DW.png',  # 0
-    #     'sprite/game_block/hip_on_LT_UP.png',  # 1
-    #     'sprite/game_block/hip_on_RT_DW.png',  # 2
-    #     'sprite/game_block/hip_on_RT_UP.png',  # 3
-    #     'sprite/game_block/horizontal_on.png',  # 4
-    #     'sprite/game_block/vertical_on.png',  # 5
-    # ]
-
 
 
     def add_img(self):
