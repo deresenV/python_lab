@@ -29,6 +29,7 @@ class BlockButton(Button):
 
 
     def check_neighbors(self, main_img, main_index): #Проверка соседей при нажатии на блок
+
         print(self.img_path, self.index) # self это next elemnt
         print(main_img, main_index) # main - нажатый
         # horizontal+horizontal
@@ -87,11 +88,25 @@ class BlockButton(Button):
                 (main_img == blocks_paths_off[4] and self.img_path == blocks_paths_on[2] and main_index - self.index == 1) or
 
                 (main_img == blocks_paths_off[3] and self.img_path == blocks_paths_on[4] and main_index - self.index == -1) or
-                (main_img == blocks_paths_off[4] and self.img_path == blocks_paths_on[3] and main_index - self.index == -1)
+                (main_img == blocks_paths_off[4] and self.img_path == blocks_paths_on[3] and main_index - self.index == 1)
 
         ):
             return True
+        #vertical+hip
+        if ((main_img==blocks_paths_off[1] and self.img_path==blocks_paths_on[5] and main_index-self.index==self.size_field) or
+                (main_img == blocks_paths_off[5] and self.img_path == blocks_paths_on[1] and main_index - self.index == -self.size_field) or
 
+                (main_img == blocks_paths_off[3] and self.img_path == blocks_paths_on[5] and main_index - self.index == self.size_field) or
+                (main_img == blocks_paths_off[5] and self.img_path == blocks_paths_on[3] and main_index - self.index == -self.size_field) or
+
+                (main_img==blocks_paths_off[5] and self.img_path==blocks_paths_on[0] and main_index-self.index==self.size_field) or
+                (main_img == blocks_paths_off[0] and self.img_path == blocks_paths_on[5] and main_index - self.index == -self.size_field) or
+
+                (main_img == blocks_paths_off[5] and self.img_path == blocks_paths_on[2] and main_index - self.index == self.size_field) or
+                (main_img == blocks_paths_off[2] and self.img_path == blocks_paths_on[5] and main_index - self.index == -self.size_field)
+
+        ):
+            return True
     # blocks_paths_off = [
     #     'sprite/game_block/hip_off_LT_DW.png',  # 0
     #     'sprite/game_block/hip_off_LT_UP.png',  # 1
@@ -126,6 +141,7 @@ class BlockButton(Button):
 
     def __init__(self, parent,x,y, img_path, index, buttons_list, field_size):
         super().__init__(parent, command=self.rotate_image)
+        self.size_field=480//field_size
         self.img_path = img_path
         self.field_size = field_size
         self.x=x
