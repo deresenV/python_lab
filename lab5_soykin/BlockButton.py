@@ -41,7 +41,6 @@ class BlockButton(Button):
 
 
     def check_neighbors(self, main_img, main_index): #Проверка соседей при нажатии на блок
-        print(self.field_size)
         # self это next elemnt
         # main - нажатый
         # horizontal+horizontal
@@ -135,6 +134,36 @@ class BlockButton(Button):
         # Сохраняем ссылку, чтобы Python не удалил
         self.image = self.tk_image
 
+    def check_connectivity(self):
+        """Выключает все кнопки, которые не соединены с кнопкой index == 0"""
+        connected = set()  # Множество всех кнопок, связанных с index == 0
+
+        # Запускаем поиск связных кнопок от начальной кнопки (index == 0)
+        def dfs(button):
+            if button in connected:
+                return  # Уже посещали
+            connected.add(button)
+            for btn in self.buttons_list:
+                if btn != button and btn.img_path in blocks_paths_on:
+                    if (abs(btn.x - button.x) == self.field_size and btn.y == button.y) or \
+                            (abs(btn.y - button.y) == self.field_size and btn.x == button.x):
+                        if btn.check_neighbors(button.img_path, button.index):
+                            dfs(btn)  # Рекурсивно проверяем дальше
+
+        # Находим кнопку с index == 0
+        start_button = next((btn for btn in self.buttons_list if btn.index == 0), None)
+        if start_button:
+            dfs(start_button)  # Запускаем DFS от index == 0
+
+        # Отключаем все кнопки, которые не были найдены
+        for btn in self.buttons_list:
+            if btn not in connected and btn.img_path in blocks_paths_on:
+                btn.set_off()  # Выключаем кнопку
+
+    def set_off(self):
+        """Выключает кнопку"""
+        self.img_path = self.img_path.replace('on', 'off')
+        self.add_img()
 
     def rotate_image(self):
         block_mappings = {
@@ -169,6 +198,6 @@ class BlockButton(Button):
         for btn in self.buttons_list:
             if btn != self:  # Не сравниваем с самой собой
                 if (abs(btn.x - self.x) == self.field_size and btn.y == self.y) or (abs(btn.y - self.y) == self.field_size and btn.x == self.x):
-                    if btn.check_neighbors(self.img_path, self.index):
+                    if btn.check_neighbors(self.img_path, self.index): #Проверка что нажатая клавиша подохдит
                         self.set_on()
 
