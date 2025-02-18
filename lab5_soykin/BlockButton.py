@@ -23,6 +23,18 @@ blocks_paths_on = [
 
 
 class BlockButton(Button):
+    def __init__(self, parent,x,y, img_path, index, buttons_list, field_size):
+        super().__init__(parent, command=self.rotate_image)
+        self.img_path = img_path
+        self.field_size = field_size
+        self.x=x
+        self.y=y
+        self.index = index  # Запоминаем индекс кнопки
+        self.buttons_list = buttons_list
+        self.size_field = 480//self.field_size
+        self.add_img()
+
+
     def set_on(self):
         self.img_path=self.img_path.replace('off', 'on')
         self.add_img()
@@ -122,18 +134,6 @@ class BlockButton(Button):
         self.place(x=self.x, y=self.y)
         # Сохраняем ссылку, чтобы Python не удалил
         self.image = self.tk_image
-
-
-    def __init__(self, parent,x,y, img_path, index, buttons_list, field_size):
-        super().__init__(parent, command=self.rotate_image)
-        self.img_path = img_path
-        self.field_size = field_size
-        self.x=x
-        self.y=y
-        self.index = index  # Запоминаем индекс кнопки
-        self.buttons_list = buttons_list
-        self.size_field = 480//self.field_size
-        self.add_img()
 
 
     def rotate_image(self):
