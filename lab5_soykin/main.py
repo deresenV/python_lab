@@ -56,9 +56,10 @@ def settings_btn():  # Функция окна настроек
     # Выход
     ttk.Button(settings_window, text="Закрыть", command=settings_window.destroy).place(x=205, y=170, width=95, height=30)
 
-def return_button():
+def return_button(): # возврат кнопок
     start_game.grid(row=0, column=3, padx=10)
     settings_button.grid(row=0, column=0, padx=10)
+
 
 def stop_button():
     global progress, stop_btn, timer_id, time_left, game_blocks
@@ -81,6 +82,7 @@ def stop_button():
     time_left = total_time  # Сбрасываем таймер
     return_button()
 
+
 def create_game_block(): # Создание игрового поля
     global game_blocks
     game_blocks=[]
@@ -93,9 +95,9 @@ def create_game_block(): # Создание игрового поля
         for x in range(480//field_size):
             img_paths=random.choice(random.choice(blocks_paths_off))
             if i==0:
-                btn=BlockButton(root,x_blocks,y_blocks,'sprite/game_block/horizontal_on.png',i,game_blocks, field_size)
+                btn=BlockButton(root,x_blocks,y_blocks,'sprite/game_block/horizontal_on.png',i,game_blocks, field_size,'yellow')
             else:
-                btn=BlockButton(root,x_blocks,y_blocks,img_paths,i, game_blocks, field_size)
+                btn=BlockButton(root,x_blocks,y_blocks,img_paths,i, game_blocks, field_size,'dark')
             game_blocks.append(btn)
             i+=1
             x_blocks+=field_size

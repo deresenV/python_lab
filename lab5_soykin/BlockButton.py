@@ -23,7 +23,7 @@ blocks_paths_on = [
 
 
 class BlockButton(Button):
-    def __init__(self, parent,x,y, img_path, index, buttons_list, field_size):
+    def __init__(self, parent,x,y, img_path, index, buttons_list, field_size, color):
         super().__init__(parent, command=self.rotate_image)
         self.img_path = img_path
         self.field_size = field_size
@@ -33,9 +33,11 @@ class BlockButton(Button):
         self.buttons_list = buttons_list
         self.size_field = 480//self.field_size
         self.add_img()
+        self.color=color
 
 
     def set_on(self):
+        self.color='yellow'
         self.img_path=self.img_path.replace('off', 'on')
         self.add_img()
 
@@ -43,12 +45,15 @@ class BlockButton(Button):
     def check_neighbors(self, main_img, main_index): #Проверка соседей при нажатии на блок
         # self это next elemnt
         # main - нажатый
+        print(self.img_path, self.index)
+        print(main_img, main_index)
+        print("\n")
         # horizontal+horizontal
         if ((main_img == blocks_paths_on[4] and self.img_path==blocks_paths_off[4] and abs(self.index-main_index)==1) or
                 (main_img == blocks_paths_off[4] and self.img_path==blocks_paths_on[4] and abs(self.index-main_index)==1)):
             return True
         # vertical + vertical
-        if ((main_img == blocks_paths_on[5] and self.img_path==blocks_paths_off[5] and abs(self.index-main_index)==1) or
+        if ((main_img == blocks_paths_on[5] and self.img_path==blocks_paths_off[5] and abs(self.index-main_index)//(480//self.field_size)==1) or
                 (main_img == blocks_paths_off[5] and self.img_path==blocks_paths_on[5] and abs(self.index-main_index)//(480//self.field_size)==1)):
             return True
         #horizontal+hip
@@ -62,7 +67,28 @@ class BlockButton(Button):
                 (main_img == blocks_paths_off[4] and self.img_path == blocks_paths_on[2] and main_index - self.index == 1) or
 
                 (main_img == blocks_paths_off[3] and self.img_path == blocks_paths_on[4] and main_index - self.index == -1) or
-                (main_img == blocks_paths_off[4] and self.img_path == blocks_paths_on[3] and main_index - self.index == 1)
+                (main_img == blocks_paths_off[4] and self.img_path == blocks_paths_on[3] and main_index - self.index == 1) or
+
+
+                (main_img == blocks_paths_on[0] and self.img_path == blocks_paths_off[
+                    4] and main_index - self.index == 1) or
+                (main_img == blocks_paths_on[4] and self.img_path == blocks_paths_off[
+                    0] and main_index - self.index == -1) or
+
+                (main_img == blocks_paths_on[1] and self.img_path == blocks_paths_off[
+                    4] and main_index - self.index == 1) or
+                (main_img == blocks_paths_on[4] and self.img_path == blocks_paths_off[
+                    1] and main_index - self.index == -1) or
+
+                (main_img == blocks_paths_on[2] and self.img_path == blocks_paths_off[
+                    4] and main_index - self.index == -1) or
+                (main_img == blocks_paths_on[4] and self.img_path == blocks_paths_off[
+                    2] and main_index - self.index == 1) or
+
+                (main_img == blocks_paths_on[3] and self.img_path == blocks_paths_off[
+                    4] and main_index - self.index == -1) or
+                (main_img == blocks_paths_on[4] and self.img_path == blocks_paths_off[
+                    3] and main_index - self.index == 1)
 
         ):
             return True
@@ -77,10 +103,31 @@ class BlockButton(Button):
                 (main_img == blocks_paths_off[0] and self.img_path == blocks_paths_on[5] and main_index - self.index == -self.size_field) or
 
                 (main_img == blocks_paths_off[5] and self.img_path == blocks_paths_on[2] and main_index - self.index == self.size_field) or
-                (main_img == blocks_paths_off[2] and self.img_path == blocks_paths_on[5] and main_index - self.index == -self.size_field)
+                (main_img == blocks_paths_off[2] and self.img_path == blocks_paths_on[5] and main_index - self.index == -self.size_field) or
+
+                (main_img == blocks_paths_on[1] and self.img_path == blocks_paths_off[
+                    5] and main_index - self.index == self.size_field) or
+                (main_img == blocks_paths_on[5] and self.img_path == blocks_paths_off[
+                    1] and main_index - self.index == -self.size_field) or
+
+                (main_img == blocks_paths_on[3] and self.img_path == blocks_paths_off[
+                    5] and main_index - self.index == self.size_field) or
+                (main_img == blocks_paths_on[5] and self.img_path == blocks_paths_off[
+                    3] and main_index - self.index == -self.size_field) or
+
+                (main_img == blocks_paths_on[5] and self.img_path == blocks_paths_off[
+                    0] and main_index - self.index == self.size_field) or
+                (main_img == blocks_paths_on[0] and self.img_path == blocks_paths_off[
+                    5] and main_index - self.index == -self.size_field) or
+
+                (main_img == blocks_paths_on[5] and self.img_path == blocks_paths_off[
+                    2] and main_index - self.index == self.size_field) or
+                (main_img == blocks_paths_on[2] and self.img_path == blocks_paths_off[
+                    5] and main_index - self.index == -self.size_field)
 
         ):
             return True
+
         #hip+hip
         if ((main_img==blocks_paths_off[1] and self.img_path==blocks_paths_on[3] and main_index-1==self.index) or
                 (main_img == blocks_paths_off[3] and self.img_path == blocks_paths_on[1] and main_index+1 == self.index)
@@ -121,6 +168,59 @@ class BlockButton(Button):
         ):
             return True
 
+        if ((main_img==blocks_paths_on[1] and self.img_path==blocks_paths_off[3] and main_index-1==self.index) or
+                (main_img == blocks_paths_on[3] and self.img_path == blocks_paths_off[1] and main_index+1 == self.index)
+        ):
+            return True
+        if ((main_img==blocks_paths_on[0] and self.img_path==blocks_paths_off[2] and main_index-1==self.index) or
+                (main_img == blocks_paths_on[2] and self.img_path == blocks_paths_off[0] and main_index + 1 == self.index)
+
+        ):
+            return True
+        if ((main_img==blocks_paths_on[0] and self.img_path==blocks_paths_off[3] and main_index-1==self.index) or
+                (main_img == blocks_paths_on[3] and self.img_path == blocks_paths_off[0] and main_index + 1 == self.index)
+        ):
+            return True
+        if ((main_img==blocks_paths_on[1] and self.img_path==blocks_paths_off[2] and main_index-1==self.index) or
+                (main_img == blocks_paths_on[2] and self.img_path == blocks_paths_off[1] and main_index + 1 == self.index)
+
+        ):
+            return True
+        #hip+hip vertical
+        if ((main_img==blocks_paths_on[3] and self.img_path==blocks_paths_off[2] and main_index-self.size_field==self.index) or
+                (main_img == blocks_paths_on[2] and self.img_path == blocks_paths_off[3] and main_index + self.size_field == self.index)
+
+        ):
+            return True
+        if ((main_img==blocks_paths_on[3] and self.img_path==blocks_paths_off[0] and main_index-self.size_field==self.index) or
+                (main_img == blocks_paths_on[0] and self.img_path == blocks_paths_off[3] and main_index + self.size_field == self.index)
+
+        ):
+            return True
+        if ((main_img==blocks_paths_on[1] and self.img_path==blocks_paths_off[0] and main_index-self.size_field==self.index) or
+                (main_img == blocks_paths_on[0] and self.img_path == blocks_paths_off[1] and main_index + self.size_field == self.index)
+        ):
+            return True
+        if ((main_img==blocks_paths_on[1] and self.img_path==blocks_paths_off[2] and main_index-self.size_field==self.index) or
+                (main_img == blocks_paths_on[2] and self.img_path == blocks_paths_off[1] and main_index + self.size_field == self.index)
+
+        ):
+            return True
+
+
+
+    def check_btn_list(self):
+        # print(self.img_path)
+        for btn in self.buttons_list:
+            # print(f"self:{self.index} btn:{btn.index} size:{self.size_field} del:{(abs(self.index-btn.index)/10)} min:{abs(self.index-btn.index)}")
+            if ((abs(self.index - btn.index) == 1 or (abs(self.index - btn.index) / self.size_field) == 1) and btn.index!=self.index and abs(self.index%10-btn.index%10)!=9):
+                if btn.check_neighbors(self.img_path, self.index):
+                    print('yes')
+                    self.set_on()
+                    btn.check_btn_list()
+                else:
+                    print("no")
+
 
     def add_img(self):
         # Загружаем изображение
@@ -142,7 +242,6 @@ class BlockButton(Button):
             blocks_paths_off[2]: 'sprite/game_block/hip_off_LT_DW.png',
             blocks_paths_off[3]: 'sprite/game_block/hip_off_RT_DW.png',
         }
-
         if self.img_path in block_mappings:
             self.img_path = block_mappings[self.img_path]
         elif self.img_path in (blocks_paths_off[4], blocks_paths_on[4]) and self.index != 0:
@@ -165,9 +264,6 @@ class BlockButton(Button):
                 self.img_path = 'sprite/game_block/horizontal_on.png'
 
         self.add_img()
-        for btn in self.buttons_list:
-            if btn != self:  # Не сравниваем с самой собой
-                if (abs(btn.x - self.x) == self.field_size and btn.y == self.y) or (abs(btn.y - self.y) == self.field_size and btn.x == self.x):
-                    if btn.check_neighbors(self.img_path, self.index): #Проверка что нажатая клавиша подохдит
-                        self.set_on()
+        self.color="dark"
+        self.check_btn_list()
 
