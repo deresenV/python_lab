@@ -13,7 +13,9 @@ def read_data_from_file(path):
 def calculate_statistics(info_interval):
     for i in range(len(info_interval)):
         info_values, time = info_interval[i][0], info_interval[i][1]
-        print(f"Начало отрезка:{time['start_time']} Конец отрезка:{time['end_time']}\nДлина:{len(info_values)} Ср.знач:{statistics.mean(info_values)} Мода:{statistics.mode(info_values)} Медиана:{statistics.median(info_values)}", sep='\n')
+        print(f"Начало отрезка:{time['start_time']} Конец отрезка:{time['end_time']}\nДлина:{len(info_values)} "
+              f"Ср.знач:{statistics.mean(info_values)} Мода:{statistics.mode(info_values)} "
+              f"Медиана:{statistics.median(info_values)}", sep='\n')
         print("\n")
 
 

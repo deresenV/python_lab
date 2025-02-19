@@ -56,6 +56,8 @@ class BlockButton(Button):
         if ((main_img == blocks_paths_on[5] and self.img_path==blocks_paths_off[5] and abs(self.index-main_index)//(480//self.field_size)==1) or
                 (main_img == blocks_paths_off[5] and self.img_path==blocks_paths_on[5] and abs(self.index-main_index)//(480//self.field_size)==1)):
             return True
+        else:
+            print('fuck')
         #horizontal+hip
         if ((main_img == blocks_paths_off[0] and self.img_path==blocks_paths_on[4] and main_index-self.index==1) or
                 (main_img == blocks_paths_off[4] and self.img_path == blocks_paths_on[0] and main_index - self.index == -1) or
@@ -210,16 +212,17 @@ class BlockButton(Button):
 
 
     def check_btn_list(self):
-        # print(self.img_path)
         for btn in self.buttons_list:
-            # print(f"self:{self.index} btn:{btn.index} size:{self.size_field} del:{(abs(self.index-btn.index)/10)} min:{abs(self.index-btn.index)}")
             if ((abs(self.index - btn.index) == 1 or (abs(self.index - btn.index) / self.size_field) == 1) and btn.index!=self.index and abs(self.index%10-btn.index%10)!=9):
                 if btn.check_neighbors(self.img_path, self.index):
-                    print('yes')
                     self.set_on()
                     btn.check_btn_list()
-                else:
-                    print("no")
+
+        for btn in self.buttons_list[::-1]:
+            if ((abs(self.index - btn.index) == 1 or (abs(self.index - btn.index) / self.size_field) == 1) and btn.index!=self.index and abs(self.index%10-btn.index%10)!=9):
+                if btn.check_neighbors(self.img_path, self.index):
+                    self.set_on()
+                    btn.check_btn_list()
 
 
     def add_img(self):
