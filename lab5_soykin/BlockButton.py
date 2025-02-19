@@ -250,7 +250,7 @@ class BlockButton(Button):
 
         if self.img_path in block_mappings_off:
             self.img_path = block_mappings_off[self.img_path]
-        elif self.img_path in block_mappings_on:
+        elif self.img_path in block_mappings_on and self.index==0:
             self.img_path = block_mappings_on[self.img_path]
         elif self.img_path in (blocks_paths_off[4], blocks_paths_on[4]) and self.index != 0:
             self.img_path = 'sprite/game_block/vertical_off.png'
