@@ -34,7 +34,8 @@ class BlockButton(Button):
         self.size_field = 480//self.field_size
         self.add_img()
         self.color=color
-
+        if self.index==self.size_field**2-1:
+            self.buttons_list[0].check_btn_list()
 
     def set_on(self):
         self.color='yellow'
@@ -45,9 +46,6 @@ class BlockButton(Button):
     def check_neighbors(self, main_img, main_index): #Проверка соседей при нажатии на блок
         # self это next elemnt
         # main - нажатый
-        print(self.img_path, self.index)
-        print(main_img, main_index)
-        print("\n")
         # horizontal+horizontal
         if ((main_img == blocks_paths_on[4] and self.img_path==blocks_paths_off[4] and abs(self.index-main_index)==1) or
                 (main_img == blocks_paths_off[4] and self.img_path==blocks_paths_on[4] and abs(self.index-main_index)==1)):
@@ -56,8 +54,6 @@ class BlockButton(Button):
         if ((main_img == blocks_paths_on[5] and self.img_path==blocks_paths_off[5] and abs(self.index-main_index)//(480//self.field_size)==1) or
                 (main_img == blocks_paths_off[5] and self.img_path==blocks_paths_on[5] and abs(self.index-main_index)//(480//self.field_size)==1)):
             return True
-        else:
-            print('fuck')
         #horizontal+hip
         if ((main_img == blocks_paths_off[0] and self.img_path==blocks_paths_on[4] and main_index-self.index==1) or
                 (main_img == blocks_paths_off[4] and self.img_path == blocks_paths_on[0] and main_index - self.index == -1) or
@@ -237,36 +233,47 @@ class BlockButton(Button):
         # Сохраняем ссылку, чтобы Python не удалил
         self.image = self.tk_image
 
-
     def rotate_image(self):
-        block_mappings = {
+        block_mappings_off = {
             blocks_paths_off[0]: 'sprite/game_block/hip_off_LT_UP.png',
             blocks_paths_off[1]: 'sprite/game_block/hip_off_RT_UP.png',
             blocks_paths_off[2]: 'sprite/game_block/hip_off_LT_DW.png',
             blocks_paths_off[3]: 'sprite/game_block/hip_off_RT_DW.png',
         }
-        if self.img_path in block_mappings:
-            self.img_path = block_mappings[self.img_path]
+
+        block_mappings_on = {
+            blocks_paths_on[0]: 'sprite/game_block/hip_on_LT_UP.png',
+            blocks_paths_on[1]: 'sprite/game_block/hip_on_RT_UP.png',
+            blocks_paths_on[2]: 'sprite/game_block/hip_on_LT_DW.png',
+            blocks_paths_on[3]: 'sprite/game_block/hip_on_RT_DW.png',
+        }
+
+        if self.img_path in block_mappings_off:
+            self.img_path = block_mappings_off[self.img_path]
+        elif self.img_path in block_mappings_on:
+            self.img_path = block_mappings_on[self.img_path]
         elif self.img_path in (blocks_paths_off[4], blocks_paths_on[4]) and self.index != 0:
             self.img_path = 'sprite/game_block/vertical_off.png'
         elif self.img_path in (blocks_paths_off[5], blocks_paths_on[5]) and self.index != 0:
             self.img_path = 'sprite/game_block/horizontal_off.png'
-        elif self.img_path in (blocks_paths_on[0], blocks_paths_on[0]) and self.index != 0:
+        elif self.img_path == blocks_paths_on[0] and self.index != 0:
             self.img_path = blocks_paths_off[1]
-        elif self.img_path in (blocks_paths_on[1], blocks_paths_on[1]) and self.index != 0:
+        elif self.img_path == blocks_paths_on[1] and self.index != 0:
             self.img_path = blocks_paths_off[3]
-        elif self.img_path in (blocks_paths_on[2], blocks_paths_on[2]) and self.index != 0:
+        elif self.img_path == blocks_paths_on[2] and self.index != 0:
             self.img_path = blocks_paths_off[0]
-        elif self.img_path in (blocks_paths_on[3], blocks_paths_on[3]) and self.index != 0:
+        elif self.img_path == blocks_paths_on[3] and self.index != 0:
             self.img_path = blocks_paths_off[2]
 
         if self.index == 0:
-            if self.img_path == blocks_paths_on[4]:
-                self.img_path = 'sprite/game_block/vertical_on.png'
-            elif self.img_path == blocks_paths_on[5]:
-                self.img_path = 'sprite/game_block/horizontal_on.png'
+            block_mappings_special = {
+                blocks_paths_on[4]: 'sprite/game_block/vertical_on.png',
+                blocks_paths_on[5]: 'sprite/game_block/horizontal_on.png'
+            }
+            self.img_path = block_mappings_special.get(self.img_path, self.img_path)
 
         self.add_img()
-        self.color="dark"
+        self.color = "dark"
         self.check_btn_list()
+
 

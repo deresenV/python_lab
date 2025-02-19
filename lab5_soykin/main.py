@@ -95,7 +95,7 @@ def create_game_block(): # Создание игрового поля
         for x in range(480//field_size):
             img_paths=random.choice(random.choice(blocks_paths_off))
             if i==0:
-                btn=BlockButton(root,x_blocks,y_blocks,'sprite/game_block/horizontal_on.png',i,game_blocks, field_size,'yellow')
+                btn=BlockButton(root,x_blocks,y_blocks,'sprite/game_block/hip_on_LT_UP.png',i,game_blocks, field_size,'yellow')
             else:
                 btn=BlockButton(root,x_blocks,y_blocks,img_paths,i, game_blocks, field_size,'dark')
             game_blocks.append(btn)
