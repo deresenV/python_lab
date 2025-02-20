@@ -5,7 +5,7 @@ from tkinter import ttk
 
 from lab5_soykin.BlockButton import BlockButton
 
-total_time = 120  # Время в секундах
+total_time = 120 # Время в секундах
 field_size = 48  # Размер игрового блока
 progress = None  # Полоска прогресса
 stop_btn = None  # Кнопка "Stop"
@@ -22,6 +22,14 @@ blocks_paths_off = [
      ],
     ['sprite/game_block/horizontal_off.png'],
     ['sprite/game_block/vertical_off.png'],
+]
+blocks_paths_on = [
+    'sprite/game_block/hip_on_LT_DW.png', # 0
+    'sprite/game_block/hip_on_LT_UP.png', # 1
+    'sprite/game_block/hip_on_RT_DW.png', # 2
+    'sprite/game_block/hip_on_RT_UP.png', # 3
+    'sprite/game_block/horizontal_on.png', # 4
+    'sprite/game_block/vertical_on.png', # 5
 ]
 
 def create_window(x, y):
@@ -90,6 +98,16 @@ def stop_button():
     time_left = total_time  # Сбрасываем таймер
     return_button()
 
+def replace_img_json(value):
+    if "hip" in value:
+        return "hip"
+    if "line" in value:
+        return "line"
+    return "all"
+
+def replace_img_paths(values):
+    img_paths = values.replace("hip", f"{random.choice(blocks_paths_off[0])}").replace("line", f"{random.choice([blocks_paths_off[1][0], blocks_paths_off[2][0]])}").replace("all", f"{random.choice(blocks_paths_off)[0]}")
+    return img_paths
 
 def create_game_block(): # Создание игрового поля
     global game_blocks
@@ -117,15 +135,14 @@ def create_game_block(): # Создание игрового поля
         with open(f"maps/map_{480//field_size}x{480//field_size}.json", "r", encoding="utf-8") as f:
             data = json.load(f)
         # Извлекаем все значения из вложенных списков
-        values = [value for rows in data[f"{random.randint(1, len(data))}"].values() for value in rows]
+        values = [replace_img_json(value) for rows in data[f"{random.randint(1, len(data))}"].values() for value in rows]
         print(values)
         for y in range(480//field_size):
             x_blocks=0
             for x in range(480//field_size):
-                img_paths = values[i].replace("hip",f"{random.choice(blocks_paths_off[0])}").replace("line",f"{random.choice([blocks_paths_off[1][0], blocks_paths_off[2][0]])}").replace("all",f"{random.choice(random.choice(blocks_paths_off))}")
-                if i == 0:
-                    btn = BlockButton(root, x_blocks, y_blocks, 'sprite/game_block/hip_on_LT_UP.png', i, game_blocks,
-                                      field_size, 'yellow')
+                img_paths=replace_img_paths(values[i])
+                if i==0:
+                    btn = BlockButton(root, x_blocks, y_blocks, 'sprite/game_block/hip_on_LT_UP.png', i, game_blocks, field_size, 'yellow')
                 else:
                     btn = BlockButton(root, x_blocks, y_blocks, img_paths, i, game_blocks, field_size, 'dark')
                 game_blocks.append(btn)
@@ -133,6 +150,34 @@ def create_game_block(): # Создание игрового поля
                 x_blocks += field_size
             y_blocks += field_size
 
+def create_game_answer():
+    y_blocks=28
+    game_blocks=[]
+    i=0
+    with open(f"maps/map_{480 // field_size}x{480 // field_size}.json", "r", encoding="utf-8") as f:
+        data = json.load(f)
+    # Извлекаем все значения из вложенных списков
+    values = [value for rows in data[f"{random.randint(1, len(data))}"].values() for value in rows]
+    for y in range(480 // field_size):
+        x_blocks = 0
+        for x in range(480 // field_size):
+            img_paths=((values[i].replace("hip_rd",f'{blocks_paths_on[2]}').replace("hip_ld",f"{blocks_paths_on[0]}")
+                       .replace("hip_ru",f'{blocks_paths_on[3]}').replace("hip_lu",f"{blocks_paths_on[1]}"))
+                       .replace("line_v",f"{blocks_paths_on[5]}")).replace("line_h",f"{blocks_paths_on[4]}")
+            btn = BlockButton(root, x_blocks, y_blocks, img_paths, i, game_blocks, field_size, 'yellow')
+            game_blocks.append(btn)
+            i += 1
+            x_blocks += field_size
+        y_blocks += field_size
+
+# blocks_paths_on = [
+#     'sprite/game_block/hip_on_LT_DW.png', # 0
+#     'sprite/game_block/hip_on_LT_UP.png', # 1
+#     'sprite/game_block/hip_on_RT_DW.png', # 2
+#     'sprite/game_block/hip_on_RT_UP.png', # 3
+#     'sprite/game_block/horizontal_on.png', # 4
+#     'sprite/game_block/vertical_on.png', # 5
+# ]
 
 
 def result_game(text):  # Если закончилось время
@@ -143,7 +188,8 @@ def result_game(text):  # Если закончилось время
     ttk.Label(lose_window, text=text,font=("Arial", 36)).pack(anchor=CENTER)
     ttk.Button(lose_window, text="Выйти из игры", command=root.destroy).pack(anchor=CENTER)
     ttk.Button(lose_window, text="Играть", command=lambda: (new_game(), lose_window.destroy())).pack(anchor=CENTER)
-
+    if text=="Вы проиграли":
+        create_game_answer()
 
 def new_game():  # Старт игры с таймером
     global progress, stop_btn, time_left, timer_id
