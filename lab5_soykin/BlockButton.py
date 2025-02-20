@@ -209,7 +209,6 @@ class BlockButton(Button):
     def set_off_all(self):
         for btn in self.buttons_list[1:]:
             if btn.color=="yellow":
-                print(btn.color, btn.index)
                 btn.img_path=btn.img_path.replace("_on", "_off")
                 btn.add_img()
                 btn.color="dark"
