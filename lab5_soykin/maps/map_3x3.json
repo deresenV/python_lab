@@ -1,0 +1,19 @@
+{
+  "1": {
+    "row1": [
+      "hip",
+      "line",
+      "line"
+    ],
+    "row2": [
+      "line",
+      "hip",
+      "hip"
+    ],
+    "row3": [
+      "hip",
+      "hip",
+      "all"
+    ]
+  }
+}

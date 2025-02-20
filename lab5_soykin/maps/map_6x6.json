@@ -1,0 +1,10 @@
+{
+  "1": {
+    "row1": ["hip", "line", "line", "line", "line", "hip"],
+    "row2": ["line", "all", "hip", "hip", "line", "hip"],
+    "row3": ["hip", "line", "hip", "line", "hip", "hip"],
+    "row4": ["hip", "line", "line", "hip", "line", "line"],
+    "row5": ["line", "hip", "all", "line", "hip", "line"],
+    "row6": ["hip", "hip", "all", "line", "line", "hip"]
+  }
+}
