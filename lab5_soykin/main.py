@@ -1,3 +1,4 @@
+import json
 import random
 from tkinter import *
 from tkinter import ttk
@@ -11,6 +12,7 @@ stop_btn = None  # Кнопка "Stop"
 time_left = total_time  # Время, оставшееся на таймере
 timer_id = None  # ID таймера для `after`
 game_blocks=None
+
 count=0
 blocks_paths_off = [
     ['sprite/game_block/hip_off_LT_DW.png',
@@ -30,13 +32,18 @@ def create_window(x, y):
     root.iconphoto(False, icon)
     return root
 
+
+def toggle():
+    print(f"Состояние: {var.get()}")  # 1 — включено, 0 — выключено
+
+
 def settings_btn():  # Функция окна настроек
     settings_window = Toplevel(root)
     settings_window.title("Настройки")
     settings_window.geometry("300x200")
 
     def get_size():  # Изменение размера игровых блоков
-        global field_size
+        global field_size, var
         size = count_block.get()
 
         if not size.isdigit():  # Проверка на ввод только чисел
@@ -52,7 +59,8 @@ def settings_btn():  # Функция окна настроек
     count_block = ttk.Entry(settings_window)
     count_block.place(x=100, y=0, width=50, height=30)
     ttk.Button(settings_window, text="Сохранить", command=get_size).place(x=150, y=0)
-
+    ttk.Label(settings_window, text="Прегенерация:").place(x=0, y=60, height=30)
+    ttk.Checkbutton(settings_window, variable=var, command=toggle).place(x=100, y=60, height=30)
     # Выход
     ttk.Button(settings_window, text="Закрыть", command=settings_window.destroy).place(x=205, y=170, width=95, height=30)
 
@@ -90,19 +98,41 @@ def create_game_block(): # Создание игрового поля
     #Координаты 28> - верхние кнопки
     y_blocks=28
     x_blocks=0
-    for y in range(480//field_size):
-        x_blocks=0
-        for x in range(480//field_size):
-            img_paths=random.choice(random.choice(blocks_paths_off))
-            if i==0:
-                btn=BlockButton(root,x_blocks,y_blocks,'sprite/game_block/hip_on_LT_UP.png',i,game_blocks, field_size,'yellow')
-            else:
-                btn=BlockButton(root,x_blocks,y_blocks,img_paths,i, game_blocks, field_size,'dark')
-            game_blocks.append(btn)
-            i+=1
-            x_blocks+=field_size
+    if var.get()==0:
+        print(1)
+        for y in range(480//field_size):
+            x_blocks=0
+            for x in range(480//field_size):
+                img_paths=random.choice(random.choice(blocks_paths_off))
+                if i==0:
+                    btn=BlockButton(root,x_blocks,y_blocks,'sprite/game_block/hip_on_LT_UP.png',i,game_blocks, field_size,'yellow')
+                else:
+                    btn=BlockButton(root,x_blocks,y_blocks,img_paths,i, game_blocks, field_size,'dark')
+                game_blocks.append(btn)
+                i+=1
+                x_blocks+=field_size
 
-        y_blocks+=field_size
+            y_blocks+=field_size
+    else:
+        with open(f"maps/map_{480//field_size}x{480//field_size}.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+        # Извлекаем все значения из вложенных списков
+        values = [value for rows in data[f"{random.randint(1, len(data))}"].values() for value in rows]
+        print(values)
+        for y in range(480//field_size):
+            x_blocks=0
+            for x in range(480//field_size):
+                img_paths = values[i].replace("hip",f"{random.choice(blocks_paths_off[0])}").replace("line",f"{random.choice([blocks_paths_off[1][0], blocks_paths_off[2][0]])}").replace("all",f"{random.choice(random.choice(blocks_paths_off))}")
+                if i == 0:
+                    btn = BlockButton(root, x_blocks, y_blocks, 'sprite/game_block/hip_on_LT_UP.png', i, game_blocks,
+                                      field_size, 'yellow')
+                else:
+                    btn = BlockButton(root, x_blocks, y_blocks, img_paths, i, game_blocks, field_size, 'dark')
+                game_blocks.append(btn)
+                i += 1
+                x_blocks += field_size
+            y_blocks += field_size
+
 
 
 def result_game(text):  # Если закончилось время
@@ -163,7 +193,7 @@ def new_game():  # Старт игры с таймером
 # Окно игры
 y_size = 480 + 28 + 30
 root = create_window(480, y_size)
-
+var = IntVar()  # Переменная для хранения состояния
 frame = ttk.Frame(root)
 frame.pack(pady=0)
 
