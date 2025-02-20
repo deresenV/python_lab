@@ -1,11 +1,11 @@
 {
   "1": {
     "row1": ["hip", "line", "line", "line", "line", "line", "hip"],
-    "row2": ["line", "hip", "line", "hip", "line", "hip", "line"],
-    "row3": ["line", "line", "hip", "line", "hip", "line", "all"],
+    "row2": ["line", "all", "hip", "hip", "line", "hip", "line"],
+    "row3": ["hip", "line", "hip", "line", "all", "line", "line"],
     "row4": ["hip", "line", "line", "hip", "line", "all", "hip"],
-    "row5": ["line", "hip", "line", "all", "hip", "line", "line"],
-    "row6": ["line", "all", "hip", "line", "line", "hip", "line"],
-    "row7": ["hip", "line", "all", "hip", "line", "line", "hip"]
+    "row5": ["line", "hip", "line", "hip", "line", "hip", "hip"],
+    "row6": ["line", "hip", "hip", "line", "hip", "hip", "line"],
+    "row7": ["hip", "line", "hip", "hip", "line", "line", "hip"]
   }
 }

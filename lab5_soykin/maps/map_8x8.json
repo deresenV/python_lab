@@ -1,12 +1,12 @@
 {
   "1": {
-    "row1": ["hip", "line", "line", "line", "line", "line", "line", "hip"],
-    "row2": ["line", "hip", "line", "hip", "line", "hip", "line", "hip"],
-    "row3": ["line", "line", "hip", "line", "hip", "line", "hip", "all"],
-    "row4": ["hip", "line", "line", "hip", "line", "all", "line", "hip"],
-    "row5": ["line", "hip", "line", "all", "hip", "line", "hip", "line"],
-    "row6": ["line", "line", "hip", "line", "line", "hip", "all", "line"],
-    "row7": ["hip", "all", "line", "hip", "line", "line", "hip", "line"],
-    "row8": ["hip", "line", "all", "line", "hip", "line", "line", "hip"]
+    "row1": ["hip", "line", "line", "line", "line", "hip", "hip", "hip"],
+    "row2": ["hip", "line", "hip", "hip", "hip", "hip", "hip", "line"],
+    "row3": ["hip", "line", "hip", "line", "hip", "line", "line", "hip"],
+    "row4": ["line", "hip", "hip", "hip", "line", "line", "line", "hip"],
+    "row5": ["line", "line", "hip", "line", "hip", "hip", "hip", "line"],
+    "row6": ["line", "line", "hip", "line", "hip", "line", "line", "line"],
+    "row7": ["line", "line", "line", "line", "hip", "line", "line", "line"],
+    "row8": ["hip", "hip", "hip", "line", "hip", "line", "hip", "hip"]
   }
 }
