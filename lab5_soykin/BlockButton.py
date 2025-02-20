@@ -206,6 +206,14 @@ class BlockButton(Button):
             return True
 
 
+    def set_off_all(self):
+        for btn in self.buttons_list[1:]:
+            if btn.color=="yellow":
+                print(btn.color, btn.index)
+                btn.img_path=btn.img_path.replace("_on", "_off")
+                btn.add_img()
+                btn.color="dark"
+
 
     def check_btn_list(self):
         for btn in self.buttons_list:
@@ -273,7 +281,9 @@ class BlockButton(Button):
             self.img_path = block_mappings_special.get(self.img_path, self.img_path)
 
         self.add_img()
+
         self.color = "dark"
         self.check_btn_list()
-
+        self.set_off_all()
+        self.buttons_list[0].check_btn_list()
 
