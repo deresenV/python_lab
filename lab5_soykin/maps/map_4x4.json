@@ -1,8 +1,8 @@
 {
   "1": {
-    "row1": ["hip", "line", "line", "hip"],
-    "row2": ["line", "hip", "line", "hip"],
-    "row3": ["line", "line", "hip", "hip"],
-    "row4": ["hip", "hip", "all", "hip"]
+    "row1": ["hip_rd", "line_h", "line_h", "hip_ld"],
+    "row2": ["line_v", "hip_rd", "line_h", "hip_lu"],
+    "row3": ["line_v", "line_v", "hip_rd", "hip_ld"],
+    "row4": ["hip_ru", "hip_ru", "hip_lu", "hip_ru"]
   }
 }

@@ -1,9 +1,9 @@
 {
   "1": {
-    "row1": ["hip", "line", "line", "line", "hip"],
-    "row2": ["line", "hip", "line", "hip", "line"],
-    "row3": ["line", "line", "hip", "line", "line"],
-    "row4": ["line", "line", "hip", "hip", "line"],
-    "row5": ["hip", "hip", "hip", "line", "hip"]
+    "row1": ["hip_rd", "line_h", "line_h", "line_h", "hip_ld"],
+    "row2": ["line_v", "hip_rd", "line_h", "hip_ld", "line_v"],
+    "row3": ["line_v", "line_v", "hip_rd", "line_v", "line_v"],
+    "row4": ["line_v", "line_v", "hip_ru", "hip_lu", "line_v"],
+    "row5": ["hip_ru", "hip_lu", "hip_ru", "line_h", "hip_lu"]
   }
 }

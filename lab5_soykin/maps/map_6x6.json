@@ -1,10 +1,10 @@
 {
   "1": {
-    "row1": ["hip", "line", "line", "line", "line", "hip"],
-    "row2": ["line", "all", "hip", "hip", "line", "hip"],
-    "row3": ["hip", "line", "hip", "line", "hip", "hip"],
-    "row4": ["hip", "line", "line", "hip", "line", "line"],
-    "row5": ["line", "hip", "all", "line", "hip", "line"],
-    "row6": ["hip", "hip", "all", "line", "line", "hip"]
+    "row1": ["hip_rd", "line_h", "line_h", "line_h", "line_h", "hip_ld"],
+    "row2": ["line_v", "line_h", "hip_ld", "hip_rd", "line_h", "hip_lu"],
+    "row3": ["hip_ru", "line_h", "hip_lu", "line_v", "hip_rd", "hip_ld"],
+    "row4": ["hip_rd", "line_h", "line_h", "hip_lu", "line_v", "line_v"],
+    "row5": ["line_v", "hip_rd", "hip_ld", "line_h", "hip_lu", "line_v"],
+    "row6": ["hip_ru", "hip_lu", "hip_ru", "line_h", "line_h", "hip_lu"]
   }
 }
