@@ -209,13 +209,13 @@ class BlockButton(Button):
 
     def check_btn_list(self):
         for btn in self.buttons_list:
-            if ((abs(self.index - btn.index) == 1 or (abs(self.index - btn.index) / self.size_field) == 1) and btn.index!=self.index and abs(self.index%10-btn.index%10)!=9):
+            if ((abs(self.index - btn.index) == 1 or (abs(self.index - btn.index) / self.size_field) == 1) and btn.index!=self.index and abs(self.index%self.size_field-btn.index%self.size_field)!=self.size_field-1):
                 if btn.check_neighbors(self.img_path, self.index):
                     self.set_on()
                     btn.check_btn_list()
 
         for btn in self.buttons_list[::-1]:
-            if ((abs(self.index - btn.index) == 1 or (abs(self.index - btn.index) / self.size_field) == 1) and btn.index!=self.index and abs(self.index%10-btn.index%10)!=9):
+            if ((abs(self.index - btn.index) == 1 or (abs(self.index - btn.index) / self.size_field) == 1) and btn.index!=self.index and abs(self.index%self.size_field-btn.index%self.size_field)!=self.size_field-1):
                 if btn.check_neighbors(self.img_path, self.index):
                     self.set_on()
                     btn.check_btn_list()
