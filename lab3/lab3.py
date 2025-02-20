@@ -21,7 +21,7 @@ def calculate_statistics(data):
 
 def main():
     if len(sys.argv) != 3:
-        print("Использование: python3 main.py <filename> <interval>")
+        print("Использование: python3 lab3.py <filename> <interval>")
         sys.exit(1)
 
     filename = sys.argv[1]
