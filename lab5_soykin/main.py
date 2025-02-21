@@ -5,7 +5,7 @@ from tkinter import ttk
 
 from lab5_soykin.BlockButton import BlockButton
 
-total_time = 120 # Время в секундах
+total_time = 8 # Время в секундах
 field_size = 48  # Размер игрового блока
 progress = None  # Полоска прогресса
 stop_btn = None  # Кнопка "Stop"
