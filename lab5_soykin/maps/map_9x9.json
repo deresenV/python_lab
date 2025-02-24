@@ -1,13 +1,13 @@
 {
   "1": {
-    "row1": ["hip", "line", "line", "line", "line", "line", "line", "line", "hip"],
-    "row2": ["line", "hip", "line", "hip", "line", "hip", "line", "hip", "line"],
-    "row3": ["line", "line", "hip", "line", "hip", "line", "hip", "line", "all"],
-    "row4": ["hip", "line", "line", "hip", "line", "all", "line", "hip", "line"],
-    "row5": ["line", "hip", "line", "all", "hip", "line", "hip", "line", "hip"],
-    "row6": ["line", "line", "hip", "line", "line", "hip", "all", "line", "line"],
-    "row7": ["hip", "all", "line", "hip", "line", "line", "hip", "line", "hip"],
-    "row8": ["line", "hip", "line", "line", "hip", "line", "line", "hip", "all"],
-    "row9": ["hip", "line", "all", "hip", "line", "line", "line", "line", "hip"]
+    "row1": ["hip_rd", "line_h", "line_h", "line_h", "hip_ld", "hip_rd", "hip_ld", "hip_rd", "hip_ld"],
+    "row2": ["line_v", "hip_rd", "line_h", "hip_ld", "hip_ru", "hip_lu", "line_v", "line_v", "line_v"],
+    "row3": ["line_v", "hip_ru", "hip_ld", "hip_ru", "line_h", "hip_ld", "line_v", "line_v", "line_v"],
+    "row4": ["line_v", "hip_rd", "hip_lu", "hip_rd", "line_h", "hip_lu", "line_v", "line_v", "line_v"],
+    "row5": ["line_v", "line_v", "line_v", "line_v", "hip_rd", "hip_ld", "hip_ru", "hip_lu", "line_v"],
+    "row6": ["hip_ru", "hip_lu", "line_v", "line_v", "line_v", "hip_ru", "line_h", "hip_ld", "line_v"],
+    "row7": ["hip_rd", "hip_ld", "line_v", "line_v", "line_v", "hip_rd", "line_h", "line_h", "hip_lu"],
+    "row8": ["line_v", "hip_ru", "hip_lu", "line_v", "line_v", "hip_ru", "line_h", "line_h", "hip_ld"],
+    "row9": ["hip_ru", "line_h", "line_h", "hip_lu", "hip_ru", "line_h", "line_h", "line_h", "hip_lu"]
   }
 }
