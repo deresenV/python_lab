@@ -29,16 +29,28 @@ def upload_file():
     ttk.Button(root, text="Начать поиск", command=start_scan).pack(anchor=tkinter.CENTER)
 
 def start_scan():
-    dict_dupls= defaultdict(list)
-    filter_with_size_scan(dict_dupls)
+    """Запуск алгоритма сортировки файлов и поиска дюпнутых"""
+    filter_with_size_scan()
 
 
-def filter_with_size_scan(dict_dupls):
-    file_catalog=os.listdir(file_path)
-    for file in file_catalog:
-        file = os.path.join(file_path, file)
-        if os.path.isfile(file):
-            dict_dupls[f"file.size"].append(file)
+def filter_with_size_scan():
+    """Сканирует по размеру и закидывает в словарь в конечном итоге если у лишь 1 файла есть такой размер то у файла не может быть дубликатов и мы его удаляем
+    :return: array путей до файлов с одинаковым весом
+    """
+    global file_path
+    size_dict = defaultdict(list)
+
+    for root, dirs, files in os.walk(file_path):  # Рекурсивный обход папок
+        for file in files:
+            file_path = os.path.join(root, file)
+            try:
+                file_size = os.path.getsize(file_path)  # Получаем размер файла
+                size_dict[file_size].append(file_path)  # Группируем файлы по размеру
+            except (PermissionError, FileNotFoundError):
+                continue  # Игнорируем файлы, к которым нет доступа
+
+    # Убираем файлы с уникальным размером
+    return {size: paths for size, paths in size_dict.items() if len(paths) > 1}
 
 
 
