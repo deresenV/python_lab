@@ -24,26 +24,35 @@ blocks_paths_on = [
 
 class BlockButton(Button):
     def __init__(self, parent,x,y, img_path, index, buttons_list, field_size, color):
-        super().__init__(parent, command=self.rotate_image)
+        super().__init__(parent, command=self.rotate_image) # Обращение к классу Button из tkinter
         self.img_path = img_path
         self.field_size = field_size
         self.x=x
         self.y=y
         self.index = index  # Запоминаем индекс кнопки
         self.buttons_list = buttons_list
-        self.size_field = 480//self.field_size
+        self.size_field = 480//self.field_size # Размер поля N*N - Переменная N
         self.add_img()
         self.color=color
         if self.index==self.size_field**2-1:
             self.buttons_list[0].check_btn_list()
 
     def set_on(self):
+        """
+        Включает блок кнопку
+        :return: -
+        """
         self.color='yellow'
         self.img_path=self.img_path.replace('off', 'on')
         self.add_img()
 
 
-    def check_neighbors(self, main_img, main_index): #Проверка соседей при нажатии на блок
+    def check_neighbors(self, main_img, main_index):#Проверка соседей при нажатии на блок
+        """
+        :param main_img: self картинка(нажатая) переданная сюда вместе с кнопкой соседом(self)
+        :param main_index: индекс кнопки(нажатой) переданной сюда вместе с кнопкой соседом
+        :return: True если соеденены
+        """
         # self это next elemnt
         # main - нажатый
         # horizontal+horizontal
@@ -207,6 +216,10 @@ class BlockButton(Button):
 
 
     def set_off_all(self):
+        """
+        Выключает все кнопки
+        :return: off img_path
+        """
         for btn in self.buttons_list[1:]:
             if btn.color=="yellow":
                 btn.img_path=btn.img_path.replace("_on", "_off")
@@ -215,6 +228,10 @@ class BlockButton(Button):
 
 
     def check_btn_list(self):
+        """
+        Проверяет соседей на подходимость двигаясь в глубину(Рекурсивно условно)
+        :return: Загорает клавиши
+        """
         for btn in self.buttons_list:
             if ((abs(self.index - btn.index) == 1 or (abs(self.index - btn.index) / self.size_field) == 1) and btn.index!=self.index and abs(self.index%self.size_field-btn.index%self.size_field)!=self.size_field-1):
                 if btn.check_neighbors(self.img_path, self.index):
@@ -229,6 +246,10 @@ class BlockButton(Button):
 
 
     def add_img(self):
+        """
+        Натягивает изображение на кнопку
+        :return: сохраненная текстура(чтоб не пропала)+текстура на блоке
+        """
         # Загружаем изображение
         self.original_image = Image.open(self.img_path).resize((self.field_size, self.field_size))
         self.current_image = self.original_image.copy()  # Создаём копию
@@ -241,6 +262,10 @@ class BlockButton(Button):
         self.image = self.tk_image
 
     def rotate_image(self):
+        """
+        Крутит изображение блока меняя его текстуру
+        :return: Повернутая и с нужным цветом кнопка блок
+        """
         block_mappings_off = {
             blocks_paths_off[0]: 'sprite/game_block/hip_off_LT_UP.png',
             blocks_paths_off[1]: 'sprite/game_block/hip_off_RT_UP.png',
@@ -281,7 +306,9 @@ class BlockButton(Button):
 
         self.add_img()
 
-        self.color = "dark"
+        self.color = "dark" # Меняет кнпоку на негорящую если повернули(В set_on меняем заново на нужный если она горит)
+
+        #Проверка в глубину всех кнопок
         self.check_btn_list()
         self.set_off_all()
         self.buttons_list[0].check_btn_list()
