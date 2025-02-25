@@ -117,7 +117,6 @@ def create_game_block(): # Создание игрового поля
     y_blocks=28
     x_blocks=0
     if var.get()==0:
-        print(1)
         for y in range(480//field_size):
             x_blocks=0
             for x in range(480//field_size):
@@ -136,7 +135,6 @@ def create_game_block(): # Создание игрового поля
             data = json.load(f)
         # Извлекаем все значения из вложенных списков
         values = [replace_img_json(value) for rows in data[f"{random.randint(1, len(data))}"].values() for value in rows]
-        print(values)
         for y in range(480//field_size):
             x_blocks=0
             for x in range(480//field_size):
@@ -151,33 +149,27 @@ def create_game_block(): # Создание игрового поля
             y_blocks += field_size
 
 def create_game_answer():
-    y_blocks=28
-    game_blocks=[]
-    i=0
-    with open(f"maps/map_{480 // field_size}x{480 // field_size}.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
-    # Извлекаем все значения из вложенных списков
-    values = [value for rows in data[f"{random.randint(1, len(data))}"].values() for value in rows]
-    for y in range(480 // field_size):
-        x_blocks = 0
-        for x in range(480 // field_size):
-            img_paths=((values[i].replace("hip_rd",f'{blocks_paths_on[2]}').replace("hip_ld",f"{blocks_paths_on[0]}")
-                       .replace("hip_ru",f'{blocks_paths_on[3]}').replace("hip_lu",f"{blocks_paths_on[1]}"))
-                       .replace("line_v",f"{blocks_paths_on[5]}")).replace("line_h",f"{blocks_paths_on[4]}")
-            btn = BlockButton(root, x_blocks, y_blocks, img_paths, i, game_blocks, field_size, 'yellow')
-            game_blocks.append(btn)
-            i += 1
-            x_blocks += field_size
-        y_blocks += field_size
-
-# blocks_paths_on = [
-#     'sprite/game_block/hip_on_LT_DW.png', # 0
-#     'sprite/game_block/hip_on_LT_UP.png', # 1
-#     'sprite/game_block/hip_on_RT_DW.png', # 2
-#     'sprite/game_block/hip_on_RT_UP.png', # 3
-#     'sprite/game_block/horizontal_on.png', # 4
-#     'sprite/game_block/vertical_on.png', # 5
-# ]
+    if var.get()==0:
+        return 0
+    else:
+        y_blocks=28
+        game_blocks=[]
+        i=0
+        with open(f"maps/map_{480 // field_size}x{480 // field_size}.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+        # Извлекаем все значения из вложенных списков
+        values = [value for rows in data[f"{random.randint(1, len(data))}"].values() for value in rows]
+        for y in range(480 // field_size):
+            x_blocks = 0
+            for x in range(480 // field_size):
+                img_paths=((values[i].replace("hip_rd",f'{blocks_paths_on[2]}').replace("hip_ld",f"{blocks_paths_on[0]}")
+                           .replace("hip_ru",f'{blocks_paths_on[3]}').replace("hip_lu",f"{blocks_paths_on[1]}"))
+                           .replace("line_v",f"{blocks_paths_on[5]}")).replace("line_h",f"{blocks_paths_on[4]}")
+                btn = BlockButton(root, x_blocks, y_blocks, img_paths, i, game_blocks, field_size, 'yellow')
+                game_blocks.append(btn)
+                i += 1
+                x_blocks += field_size
+            y_blocks += field_size
 
 
 def result_game(text):  # Если закончилось время
@@ -188,8 +180,8 @@ def result_game(text):  # Если закончилось время
     ttk.Label(lose_window, text=text,font=("Arial", 36)).pack(anchor=CENTER)
     ttk.Button(lose_window, text="Выйти из игры", command=root.destroy).pack(anchor=CENTER)
     ttk.Button(lose_window, text="Играть", command=lambda: (new_game(), lose_window.destroy())).pack(anchor=CENTER)
-    if text=="Вы проиграли":
-        create_game_answer()
+    create_game_answer()
+
 
 def new_game():  # Старт игры с таймером
     global progress, stop_btn, time_left, timer_id
