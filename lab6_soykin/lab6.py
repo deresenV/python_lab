@@ -8,6 +8,26 @@ file_path = None
 languages_listbox = None
 
 
+def delete_selected_files():
+    """Удаляет файлы, которые выбрал пользователь в Listbox."""
+    selected_indices = languages_listbox.curselection()  # Получаем индексы выделенных файлов
+    selected_files = [languages_listbox.get(i) for i in selected_indices]  # Получаем их текст
+
+    for file_entry in selected_files:
+        file_paths = file_entry.replace("Дубликаты: ", "").split(", ")  # Разбираем строку
+        for file in file_paths:
+            try:
+                os.remove(file)
+                print(f"Удалён файл: {file}")
+            except Exception as e:
+                print(f"Ошибка удаления {file}: {e}")
+
+    # Обновляем Listbox
+    for i in reversed(selected_indices):  # Удаляем записи из Listbox
+        languages_listbox.delete(i)
+
+# Кнопка для удаления файлов
+
 def create_window():
     global languages_listbox
     root = tkinter.Tk()
@@ -20,6 +40,10 @@ def create_window():
     y = (screen_height - height) // 2
 
     root.geometry(f"{width}x{height}+{x}+{y}")
+    root.title("fduples")
+    icon = PhotoImage(file="ico/logo.png")
+    root.iconphoto(False, icon)
+
 
     ttk.Label(root, text="Выберите директорию для поиска дубликатов").pack()
 
@@ -49,9 +73,14 @@ def start_scan():
     languages_listbox.delete(0, END)
     for size_group in files_after_byte_scan.values():
         for file_group in size_group.values():
-            for file in file_group:
-                if len(file_group) > 1:
+            if len(file_group) > 1:
+                # Добавляем строку-заголовок
+                languages_listbox.insert(END, "⚠ Одинаковые файлы:")
+
+                # Добавляем файлы в список
+                for file in file_group:
                     languages_listbox.insert(END, file)
+        languages_listbox.insert(END, "\n")
 
 
 def filter_with_size_scan():
@@ -100,4 +129,10 @@ def fast_byte_scan(size_groups, num_bytes=1024):
 
 
 root = create_window()
+
+
+
+delete_button = ttk.Button(root, text="Удалить выбранные", command=delete_selected_files)
+delete_button.pack(pady=5)
+
 root.mainloop()
