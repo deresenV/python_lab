@@ -12,7 +12,7 @@ stop_btn = None  # Кнопка "Stop"
 time_left = total_time  # Время, оставшееся на таймере
 timer_id = None  # ID таймера для `after`
 game_blocks=None
-
+game_blocksw=None
 count=0
 blocks_paths_off = [
     ['sprite/game_block/hip_off_LT_DW.png',
@@ -90,7 +90,7 @@ def return_button(): # возврат кнопок
 
 
 def stop_button():
-    global progress, stop_btn, timer_id, time_left, game_blocks
+    global progress, stop_btn, timer_id, time_left, game_blocks, game_blocksw
     if timer_id:
         root.after_cancel(timer_id)  # Останавливаем таймер
         timer_id = None
@@ -100,12 +100,15 @@ def stop_button():
     if stop_btn:
         stop_btn.destroy()  # Удаляем кнопку "Stop"
         stop_btn = None
-
     # Удаление всех кнопок из game_blocks
     if game_blocks:
         for btn in game_blocks:
             btn.destroy()
         game_blocks.clear()  # Очищаем список
+    if game_blocksw:
+        for btn in game_blocksw:
+            btn.destroy()
+        game_blocksw.clear()  # Очищаем список
 
     time_left = total_time  # Сбрасываем таймер
     return_button()
@@ -161,11 +164,12 @@ def create_game_block(): # Создание игрового поля
             y_blocks += field_size
 
 def create_game_answer():
+    global game_blocksw
     if var.get()==0:
         return 0
     else:
         y_blocks=28
-        game_blocks=[]
+        game_blocksw=[]
         i=0
         with open(f"maps/map_{480 // field_size}x{480 // field_size}.json", "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -177,8 +181,8 @@ def create_game_answer():
                 img_paths=((values[i].replace("hip_rd",f'{blocks_paths_on[2]}').replace("hip_ld",f"{blocks_paths_on[0]}")
                            .replace("hip_ru",f'{blocks_paths_on[3]}').replace("hip_lu",f"{blocks_paths_on[1]}"))
                            .replace("line_v",f"{blocks_paths_on[5]}")).replace("line_h",f"{blocks_paths_on[4]}")
-                btn = BlockButton(root, x_blocks, y_blocks, img_paths, i, game_blocks, field_size, 'yellow')
-                game_blocks.append(btn)
+                btn = BlockButton(root, x_blocks, y_blocks, img_paths, i, game_blocksw, field_size, 'yellow')
+                game_blocksw.append(btn)
                 i += 1
                 x_blocks += field_size
             y_blocks += field_size
