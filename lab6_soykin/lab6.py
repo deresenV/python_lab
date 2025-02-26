@@ -80,7 +80,7 @@ def start_scan():
                 # Добавляем файлы в список
                 for file in file_group:
                     languages_listbox.insert(END, file)
-        languages_listbox.insert(END, "\n")
+                languages_listbox.insert(END, "\n")
 
 
 def filter_with_size_scan():
