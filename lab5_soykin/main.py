@@ -32,9 +32,15 @@ blocks_paths_on = [
     'sprite/game_block/vertical_on.png', # 5
 ]
 
-def create_window(x, y):
+def create_window(width, height):
     root = Tk()
-    root.geometry(f'{x}x{y}')
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    x = (screen_width - width) // 2
+    y = (screen_height - height) // 2
+
+    root.geometry(f"{width}x{height}+{x}+{y}")
     root.title("Light'em up!")
     icon = PhotoImage(file="sprite/view_app/logo.png")
     root.iconphoto(False, icon)
@@ -48,7 +54,13 @@ def toggle():
 def settings_btn():  # Функция окна настроек
     settings_window = Toplevel(root)
     settings_window.title("Настройки")
-    settings_window.geometry("300x200")
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    x = (screen_width - 300) // 2
+    y = (screen_height - 200) // 2
+
+    settings_window.geometry(f"{300}x{200}+{x}+{y}")
 
     def get_size():  # Изменение размера игровых блоков
         global field_size, var
@@ -176,7 +188,13 @@ def result_game(text):  # Если закончилось время
     stop_button()  # Удаляем таймер и кнопку
     lose_window = Toplevel(root)
     lose_window.title("Результаты")
-    lose_window.geometry("300x200")
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    x = (screen_width - 300) // 2
+    y = (screen_height - 200) // 2
+
+    lose_window.geometry(f"{300}x{200}+{x}+{y}")
     ttk.Label(lose_window, text=text,font=("Arial", 36)).pack(anchor=CENTER)
     ttk.Button(lose_window, text="Выйти из игры", command=root.destroy).pack(anchor=CENTER)
     ttk.Button(lose_window, text="Играть", command=lambda: (new_game(), lose_window.destroy())).pack(anchor=CENTER)
