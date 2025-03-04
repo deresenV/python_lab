@@ -6,9 +6,11 @@ def split_data(file, interval):
     prev_time = None
 
     for info in file:
-        time_value = float(info["time"])
-        value = int(info["value"])
-
+        try:
+            time_value = float(info["time"])
+            value = int(info["value"])
+        except:
+            return None
         if start_time is None:  # 1
             start_time = time_value
 
