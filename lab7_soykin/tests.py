@@ -2,23 +2,23 @@ import sys
 import pytest
 from lab3 import main
 
-def test_first_question(monkeypatch):
+def test_first_question(monkeypatch): #нет указанного файла
     monkeypatch.setattr(sys, "argv", ["lab3.py", "example1.csv", "5"])
     assert main() == "Неверный файл"
 
 
-def test_second_question(monkeypatch):
+def test_second_question(monkeypatch):#файл не имеет прав на чтение;
     pass
-    # monkeypatch.setattr(sys, "argv", ["lab3.py", "png.png", "5"])
-    # assert main() == "Файл не .csv!"
+    monkeypatch.setattr(sys, "argv", ["lab3.py", "test_rights.txt", "5"])
+    assert main() == "Файл не .csv!"
 
 
-def test_third_question(monkeypatch):
+def test_third_question(monkeypatch): #файл не формата csv
     monkeypatch.setattr(sys, "argv", ["lab3.py", "png.png", "5"])
     assert main() == "Файл не .csv!"
 
 
-def test_fourth_question(monkeypatch):
+def test_fourth_question(monkeypatch): #в какой-то из строк файла только одна колонка + данные не заданного типа
     monkeypatch.setattr(sys, "argv", ["lab3.py", "test_4_5.csv", "5"])
     assert main() == "Ошибка обработки файла проверьте правильность значений"
 
